@@ -118,7 +118,7 @@ PASSWORD
         """
         accuracy = float(accuracy)
         accuracy /= 100
-        plac = "/home/epfforce/Programming/"
+        plac = "/home/epfforce/Programming/Python"
         nitroes_ammo = 1
         waittime = 64
 
