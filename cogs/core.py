@@ -125,7 +125,7 @@ PASSWORD
         logfile = random.randint(0, 1000)
         print(
             system(
-                f"nohup nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json > {logfile}.txt"
+                f"nohup nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json > {logfile}.txt &"
             )
         )
         with open("data.json") as f:
