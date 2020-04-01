@@ -139,7 +139,7 @@ PASSWORD
         accuracy /= 100
         plac = "/home/epfforce/Programming/python/"
         nitroes_ammo = 1
-        waittime = 64
+        waittime = 29
 
         logfile = random.randint(0, 1000)
         t1 = threading.Thread(
