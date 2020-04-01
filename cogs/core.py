@@ -135,7 +135,9 @@ PASSWORD
 
         await ctx.send(f"Started bot {username}")
         with open("data.json", "w") as ff:
-            ff.writelines(f"""{config}""")
+            cf = config
+            cf = str(cf).replace("'", '"')
+            ff.writelines(f"""{cf}""")
 
 
 def setup(bot):
