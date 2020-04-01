@@ -130,7 +130,7 @@ PASSWORD
         config["info"][f"{username}"] = {
             "wpm": wpm,
             "accuracy": accuracy,
-            "safe_mode": safe_mode,
+            "safe_mode": True,
         }
 
         await ctx.send(f"Started bot {username}")
