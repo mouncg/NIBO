@@ -12,13 +12,17 @@ def data():
 
 
 class Core(commands.Cog):
+    """
+
+    """
+
     def __init__(self, bot):
         self.bot = bot  # type: commands.Bot
 
     @commands.command("ping")
     async def ping(self, ctx: commands.Context):
         """
-
+        check if the bot is online.
         :param ctx:
         """
         await ctx.send("Ping!")
@@ -26,7 +30,7 @@ class Core(commands.Cog):
     @commands.command("info")
     async def _info(self, ctx: commands.Context):
         """
-
+        info!
         :param ctx:
         :return:
         """
@@ -81,6 +85,7 @@ PASSWORD
     @show.command(name="password")
     async def uname(self, ctx: commands.Context):
         """
+        password
         :param ctx:
         """
         config = data()
@@ -93,13 +98,37 @@ PASSWORD
     async def _login(
         self, ctx: commands.Context, username, password, wpm, accuracy, safe_mode
     ):
+        """
+        login!
+        :param ctx:
+        :param username:
+        :param password:
+        :param wpm:
+        :param accuracy:
+        :param safe_mode:
+        :return:
+        """
+        accuracy /= 100
         plac = "/home/epfforce/Programming/"
         nitroes_ammo = 1
         waittime = 64
         s(
             f"screen -dmS nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json"
         )
+
+        with open("data.json", "rw") as f:
+            config = json.load(f)  # type: dict
+        config["users"][f"{ctx.author.id}"] = f"{username}"
+        config["account_creds"][f"{username}"] = f"{password}"
+        config["info"][f"{username}"] = {
+            wpm: wpm,
+            accuracy: accuracy,
+            safe_mode: safe_mode,
+        }
+
         await ctx.send(f"Started bot {username}")
+        with open("data.json", "w") as ff:
+            ff.writelines(f"""{config}""")
 
 
 def setup(bot):
