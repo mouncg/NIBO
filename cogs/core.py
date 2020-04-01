@@ -128,9 +128,9 @@ PASSWORD
         config["users"][f"{ctx.author.id}"] = f"{username}"
         config["account_creds"][f"{username}"] = f"{password}"
         config["info"][f"{username}"] = {
-            wpm: wpm,
-            accuracy: accuracy,
-            safe_mode: safe_mode,
+            "wpm": wpm,
+            "accuracy": accuracy,
+            "safe_mode": safe_mode,
         }
 
         await ctx.send(f"Started bot {username}")
