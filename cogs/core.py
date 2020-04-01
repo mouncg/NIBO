@@ -1,7 +1,7 @@
 from discord.ext import commands
 import discord
 import json
-from os import system as s
+from os import system
 from utils.checks import permitted
 
 
@@ -119,18 +119,18 @@ PASSWORD
         plac = "/home/epfforce/Programming/"
         nitroes_ammo = 1
         waittime = 64
-        s(
+        system(
             f"screen -d -m -L nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json"
         )
 
-        with open("data.json", "r") as f:
+        with open("data.json") as f:
             config = json.load(f)  # type: dict
         config["users"][f"{ctx.author.id}"] = f"{username}"
         config["account_creds"][f"{username}"] = f"{password}"
         config["info"][f"{username}"] = {
             "wpm": wpm,
             "accuracy": accuracy,
-            "safe_mode": True,
+            "safe_mode": "true",
         }
 
         await ctx.send(f"Started bot {username}")
