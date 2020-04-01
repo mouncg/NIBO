@@ -21,7 +21,7 @@ run = False
 def runner(accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac):
     while run is True:
         system(
-            f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json"
+            f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -c 1 -S {safe_mode} -f {plac}nitro_cfg.json"
         )
 
 
