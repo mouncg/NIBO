@@ -120,7 +120,7 @@ PASSWORD
         nitroes_ammo = 1
         waittime = 64
         s(
-            f"screen -dmS nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json"
+            f"screen -d -m -L nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json"
         )
 
         with open("data.json", "r") as f:
