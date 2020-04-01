@@ -1,4 +1,5 @@
 import random
+import threading
 
 from discord.ext import commands
 import discord
@@ -11,6 +12,13 @@ def data():
     with open("data.json") as f:
         config = json.load(f)  # type: dict
         return config
+
+
+def runner(accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac):
+    while True:
+        system(
+            f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json"
+        )
 
 
 class Core(commands.Cog):
@@ -123,11 +131,23 @@ PASSWORD
         waittime = 64
 
         logfile = random.randint(0, 1000)
-        print(
-            system(
-                f"forever -pidFile {logfile}.pid start nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json"
-            )
+        t1 = threading.Thread(
+            target=runner,
+            args=(
+                accuracy,
+                nitroes_ammo,
+                password,
+                wpm,
+                username,
+                waittime,
+                safe_mode,
+                plac,
+            ),
+            daemon=True,
         )
+        t1.start()
+        # print( system( f"nohup nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t
+        # {waittime} -S {safe_mode} -f {plac}nitro_cfg.json > {logfile}.txt &" ) )
         with open("data.json") as f:
             config = json.load(f)  # type: dict
         config["users"][f"{ctx.author.id}"] = f"{username}"
