@@ -96,7 +96,13 @@ PASSWORD
     @commands.check(permitted)
     @commands.dm_only()
     async def _login(
-        self, ctx: commands.Context, username, password, wpm, accuracy, safe_mode
+        self,
+        ctx: commands.Context,
+        username: str,
+        password: str,
+        wpm: int,
+        accuracy: int,
+        safe_mode: bool,
     ):
         """
         login!
@@ -108,6 +114,7 @@ PASSWORD
         :param safe_mode:
         :return:
         """
+        accuracy = float(accuracy)
         accuracy /= 100
         plac = "/home/epfforce/Programming/"
         nitroes_ammo = 1
