@@ -119,10 +119,11 @@ PASSWORD
         plac = "/home/epfforce/Programming/"
         nitroes_ammo = 1
         waittime = 64
-        system(
-            f"screen -d -m -L nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json"
+        print(
+            system(
+                f"screen -d -m -L nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json"
+            )
         )
-
         with open("data.json") as f:
             config = json.load(f)  # type: dict
         config["users"][f"{ctx.author.id}"] = f"{username}"
@@ -130,7 +131,7 @@ PASSWORD
         config["info"][f"{username}"] = {
             "wpm": wpm,
             "accuracy": accuracy,
-            "safe_mode": "true",
+            "safe_mode": True,
         }
 
         await ctx.send(f"Started bot {username}")
