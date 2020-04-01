@@ -123,7 +123,7 @@ PASSWORD
             f"screen -dmS nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json"
         )
 
-        with open("data.json", "rw") as f:
+        with open("data.json", "r") as f:
             config = json.load(f)  # type: dict
         config["users"][f"{ctx.author.id}"] = f"{username}"
         config["account_creds"][f"{username}"] = f"{password}"
