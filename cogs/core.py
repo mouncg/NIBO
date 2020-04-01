@@ -5,6 +5,7 @@ from discord.ext import commands
 import discord
 import json
 from os import system
+
 from utils.checks import permitted
 
 
@@ -14,8 +15,11 @@ def data():
         return config
 
 
+run = False
+
+
 def runner(accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac):
-    while True:
+    while run is True:
         system(
             f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json"
         )
@@ -85,7 +89,6 @@ class Core(commands.Cog):
         if str(ctx.author.id) not in config["users"]:
             return await ctx.send("Please start the bot to see this info.")
         if ctx.subcommand_passed is None or ctx.invoked_subcommand == "":
-
             await ctx.send(
                 f"""```
 PASSWORD
@@ -101,6 +104,13 @@ PASSWORD
         config = data()
         pwd = config["account_creds"][config["users"][str(ctx.author.id)]]
         await ctx.send(f"Password for {config['users'][str(ctx.author.id)]}: ||{pwd}||")
+
+    @commands.command(name="stop")
+    @commands.check(permitted)
+    async def _stop(self, ctx: commands.Context):
+        global run
+        run = False
+        await ctx.send("stopped bot.")
 
     @commands.command(name=f"login")
     @commands.check(permitted)
@@ -124,6 +134,7 @@ PASSWORD
         :param safe_mode:
         :return:
         """
+        global run
         accuracy = float(accuracy)
         accuracy /= 100
         plac = "/home/epfforce/Programming/python/"
@@ -145,7 +156,9 @@ PASSWORD
             ),
             daemon=True,
         )
+        run = True
         t1.start()
+
         # print( system( f"nohup nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t
         # {waittime} -S {safe_mode} -f {plac}nitro_cfg.json > {logfile}.txt &" ) )
         with open("data.json") as f:
