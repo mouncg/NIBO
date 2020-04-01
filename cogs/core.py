@@ -1,3 +1,5 @@
+import random
+
 from discord.ext import commands
 import discord
 import json
@@ -119,9 +121,11 @@ PASSWORD
         plac = "/home/epfforce/Programming/"
         nitroes_ammo = 1
         waittime = 64
+
+        logfile = random.randint(0, 1000)
         print(
             system(
-                f"screen -d -m -L nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json"
+                f"nohup nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -S {safe_mode} -f {plac}nitro_cfg.json > {logfile}.txt"
             )
         )
         with open("data.json") as f:
@@ -131,7 +135,7 @@ PASSWORD
         config["info"][f"{username}"] = {
             "wpm": wpm,
             "accuracy": accuracy,
-            "safe_mode": True,
+            "safe_mode": safe_mode,
         }
 
         await ctx.send(f"Started bot {username}")
