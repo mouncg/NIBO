@@ -128,7 +128,7 @@ PASSWORD
         safe_mode: bool,
     ):
         """
-        login!
+        login using !login username password wpm accuracy safe_mode
         :param ctx:
         :param username:
         :param password:
