@@ -176,7 +176,7 @@ RUNNING
         config = data()
         uname = config["users"][str(ctx.author.id)]
         e = discord.Embed(color=0xFC6C85)
-        e.title = f"DISCORD <=+=+=+> NITROTYPE"
+        e.title = f"DISCORD <=====> NITROTYPE"
         e.description = f"{uname}"
         return await ctx.send(embed=e)
 
