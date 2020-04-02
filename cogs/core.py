@@ -250,7 +250,7 @@ PASSWORD
             plac,
             ctx.author.id,
         )
-
+        thread1.start()
         threads.append(thread1)
 
         # print( system( f"nohup nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t
