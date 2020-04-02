@@ -1,6 +1,7 @@
 import asyncio
 import random
 import threading
+import time
 from time import sleep
 
 from discord.ext import commands
@@ -20,7 +21,7 @@ def data():
 run = {}
 
 
-async def runner(
+def runner(
     accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid
 ):
     while run.get(uid) is True:
@@ -28,6 +29,59 @@ async def runner(
             f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -c 1 -S {safe_mode} -f {plac}nitro_cfg.json"
         )
         await asyncio.sleep(waittime)
+
+
+class myThread(threading.Thread):
+    def __init__(
+        self,
+        threadID,
+        name,
+        counter,
+        accuracy,
+        nitroes_ammo,
+        password,
+        wpm,
+        username,
+        waittime,
+        safe_mode,
+        plac,
+        uid,
+    ):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+        self.counter = counter
+        self.accuracy = accuracy
+        self.nitroes_ammo = nitroes_ammo
+        self.password = password
+        self.wpm = wpm
+        self.username = username
+        self.waittime = waittime
+        self.safe_mode = safe_mode
+        self.plac = plac
+        self.uid = uid
+        self.daemon = True
+
+    def run(self):
+        # Get lock to synchronize threads
+        threadLock.acquire()
+        runner(
+            self.accuracy,
+            self.nitroes_ammo,
+            self.password,
+            self.wpm,
+            self.username,
+            self.waittime,
+            self.safe_mode,
+            self.plac,
+            self.uid,
+        )
+        # Free lock to release next thread
+        threadLock.release()
+
+
+threadLock = threading.Lock()
+threads = []
 
 
 class Core(commands.Cog):
@@ -144,31 +198,60 @@ PASSWORD
         :param safe_mode:
         :return:
         """
-        global run
+        global run, threads
         accuracy = float(accuracy)
         accuracy /= 100
         plac = "/home/epfforce/Programming/python/"
         nitroes_ammo = 1
         waittime = 29
 
-        logfile = random.randint(0, 1000)
-        t1 = await threading.Thread(
-            target=runner,
-            args=(
-                accuracy,
-                nitroes_ammo,
-                password,
-                wpm,
-                username,
-                waittime,
-                safe_mode,
-                plac,
-                str(ctx.author.id),
-            ),
-            daemon=True,
-        )
+        # logfile = random.randint(0, 1000)
+        # t1 = await threading.Thread(
+        #     target=runner,
+        #     args=(
+        #         accuracy,
+        #         nitroes_ammo,
+        #         password,
+        #         wpm,
+        #         username,
+        #         waittime,
+        #         safe_mode,
+        #         plac,
+        #         str(ctx.author.id),
+        #     ),
+        #     daemon=True,
+        # )
+
+        # self.threadID = threadID
+        # self.name = name
+        # self.counter = counter
+        # self.accuracy = accuracy
+        # self.nitroes_ammo = nitroes_ammo
+        # self.password = password
+        # self.wpm = wpm
+        # self.username = username
+        # self.waittime = waittime
+        # self.safe_mode = safe_mode
+        # self.plac = plac
+        # self.uid = uid
+        #
         run[str(ctx.author.id)] = True
-        await t1.start()
+        thread1 = myThread(
+            len(threads) + 1,
+            f"THREAD-{len(threads) + 1}",
+            3,
+            accuracy,
+            nitroes_ammo,
+            password,
+            wpm,
+            username,
+            waittime,
+            safe_mode,
+            plac,
+            ctx.author.id,
+        )
+
+        threads.append(thread1)
 
         # print( system( f"nohup nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t
         # {waittime} -S {safe_mode} -f {plac}nitro_cfg.json > {logfile}.txt &" ) )
