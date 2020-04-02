@@ -25,9 +25,7 @@ bot.default_prefix = "!"
 with open("config.json") as f:
     bot.config = json.load(f)
     bot.owner_id = 611108193275478018
-initial_extensions = [
-    "cogs.core",
-]
+initial_extensions = ["cogs.core", "cogs.error_handler"]
 
 
 def load_exts(bot):
@@ -44,7 +42,7 @@ async def ONLINE():
     print("ONLINE")
 
 
-@bot.command(name="reload")
+@bot.command(name="reload", hidden=True)
 @commands.is_owner()
 async def _reload(ctx: commands.Context, *exts):
     for i in exts:
@@ -55,7 +53,7 @@ async def _reload(ctx: commands.Context, *exts):
 
 @bot.command("testbot")
 async def testbot(ctx: commands.Context):
-    await ctx.send("sup, I am online!")
+    await ctx.send("Sup, I am online!")
 
 
 if __name__ == "__main__":

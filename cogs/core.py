@@ -110,7 +110,7 @@ PASSWORD
     async def _stop(self, ctx: commands.Context):
         global run
         run = False
-        await ctx.send("stopped bot.")
+        await ctx.send("the bot will stop after the race!")
 
     @commands.command(name=f"login")
     @commands.check(permitted)
