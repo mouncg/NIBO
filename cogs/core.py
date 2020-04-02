@@ -182,6 +182,7 @@ RUNNING
 
     @commands.command(name="stop")
     @commands.check(permitted)
+    @commands.check(running)
     async def _stop(self, ctx: commands.Context):
         global run
         run[str(ctx.author.id)] = False
