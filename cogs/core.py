@@ -1,5 +1,6 @@
 import random
 import threading
+from time import sleep
 
 from discord.ext import commands
 import discord
@@ -25,6 +26,7 @@ def runner(
         system(
             f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -c 1 -S {safe_mode} -f {plac}nitro_cfg.json"
         )
+        sleep(waittime)
 
 
 class Core(commands.Cog):
