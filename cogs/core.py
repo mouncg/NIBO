@@ -216,7 +216,7 @@ RUNNING
         with open("data.json", "w") as ff:
             json.dump(config, ff)
 
-        return await ctx.send("FINISHED KILLING BOT!")
+        return await ctx.send("FINISHED SETTING THE BOT TO KILL AFTER FINISHED RACE!")
 
     @commands.command(name="list_running", hidden=True)
     @commands.is_owner()
