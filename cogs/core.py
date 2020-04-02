@@ -60,7 +60,7 @@ class myThread(threading.Thread):
         self.safe_mode = safe_mode
         self.plac = plac
         self.uid = uid
-        self.daemon = True
+        self.setDaemon(True)
 
     def run(self):
         # Get lock to synchronize threads
