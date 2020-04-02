@@ -30,7 +30,7 @@ def runner(
         )
 
 
-class myThread(threading.Thread):
+class Thread(threading.Thread):
     def __init__(
         self,
         name,
@@ -45,7 +45,16 @@ class myThread(threading.Thread):
         plac,
         uid,
     ):
+
         threading.Thread.__init__(self)
+        self._stop_event = threading.Event()
+
+        def stop(self):
+            self._stop_event.set()
+
+        def stopped(self):
+            return self._stop_event.is_set()
+
         self.threadID = counter
         self.name = name
         self.counter = counter
@@ -169,6 +178,7 @@ RUNNING
         e = discord.Embed(color=0xFC6C85)
         e.title = f"DISCORD <=+=+=+> NITROTYPE"
         e.description = f"{uname}"
+        return await ctx.send(embed=e)
 
     @show.command(name="password")
     async def uname(self, ctx: commands.Context):
@@ -243,7 +253,7 @@ RUNNING
         waittime = 29
 
         run[str(ctx.author.id)] = True
-        thread1 = myThread(
+        thread1 = Thread(
             f"Thread{len(threads) + 1}",
             1,
             accuracy,

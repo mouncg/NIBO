@@ -52,6 +52,7 @@ async def _reload(ctx: commands.Context, *exts):
 
 
 @bot.command("testbot")
+@commands.is_owner()
 async def testbot(ctx: commands.Context):
     await ctx.send("Sup, I am online!")
 
