@@ -114,7 +114,6 @@ PASSWORD
 
     @commands.command(name=f"login")
     @commands.check(permitted)
-    @commands.dm_only()
     async def _login(
         self,
         ctx: commands.Context,
