@@ -322,8 +322,8 @@ PASSWORD
             plac,
             ctx.author.id,
         )
-        thread1.start()
         threads.append(thread1)
+        thread1.start()
 
         # thread1.setDaemon(True)
         # thread1.run()
