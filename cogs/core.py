@@ -1,7 +1,4 @@
-import asyncio
-import random
 import threading
-import time
 from time import sleep
 
 from discord.ext import commands
@@ -89,59 +86,6 @@ threadLock = threading.Lock()
 threads = []
 
 
-# class myThread(threading.Thread):
-#     def __init__(
-#         self,
-#         threadID,
-#         name,
-#         counter,
-#         accuracy,
-#         nitroes_ammo,
-#         password,
-#         wpm,
-#         username,
-#         waittime,
-#         safe_mode,
-#         plac,
-#         uid,
-#     ):
-#         threading.Thread.__init__(self)
-#         self.threadID = threadID
-#         self.name = name
-#         self.counter = counter
-#         self.accuracy = accuracy
-#         self.nitroes_ammo = nitroes_ammo
-#         self.password = password
-#         self.wpm = wpm
-#         self.username = username
-#         self.waittime = waittime
-#         self.safe_mode = safe_mode
-#         self.plac = plac
-#         self.uid = uid
-#         self.setDaemon(True)
-#
-#     def run(self):
-#         # Get lock to synchronize threads
-#         threadLock.acquire()
-#         runner(
-#             self.accuracy,
-#             self.nitroes_ammo,
-#             self.password,
-#             self.wpm,
-#             self.username,
-#             self.waittime,
-#             self.safe_mode,
-#             self.plac,
-#             self.uid,
-#         )
-#         # Free lock to release next thread
-#         threadLock.release()
-#
-#
-# threadLock = threading.Lock()
-# threads = []
-
-
 class Core(commands.Cog):
     """
 
@@ -209,8 +153,22 @@ class Core(commands.Cog):
             await ctx.send(
                 f"""```
 PASSWORD
+RUNNING
 ```"""
             )
+
+    @show.command(name="running")
+    async def show_running(self, ctx: commands.Context):
+        """
+
+        :param ctx:
+        :return:
+        """
+        config = data()
+        uname = config["users"][str(ctx.author.id)]
+        e = discord.Embed(color=0xFC6C85)
+        e.title = f"DISCORD <=+=+=+> NITROTYPE"
+        e.description = f"{uname}"
 
     @show.command(name="password")
     async def uname(self, ctx: commands.Context):
@@ -227,7 +185,17 @@ PASSWORD
     async def _stop(self, ctx: commands.Context):
         global run
         run[str(ctx.author.id)] = False
-        await ctx.send("the bot will stop after the race!")
+
+        username = config["users"].get(f"{ctx.author.id}")
+        with open("data.json") as f:
+            config = json.load(f)  # type: dict
+        config["users"].pop(f"{ctx.author.id}", None)
+        config["account_creds"].pop(f"{username}", None)
+        config["info"].pop(f"{username}")
+        with open("data.json", "w") as ff:
+            json.dump(config, ff)
+
+        return await ctx.send("the bot will stop after the race!")
 
     @commands.command(name="list_running", hidden=True)
     @commands.is_owner()
@@ -263,52 +231,7 @@ PASSWORD
         nitroes_ammo = 1
         waittime = 29
 
-        # logfile = random.randint(0, 1000)
-        # t1 = await threading.Thread(
-        #     target=runner,
-        #     args=(
-        #         accuracy,
-        #         nitroes_ammo,
-        #         password,
-        #         wpm,
-        #         username,
-        #         waittime,
-        #         safe_mode,
-        #         plac,
-        #         str(ctx.author.id),
-        #     ),
-        #     daemon=True,
-        # )
-
-        # self.threadID = threadID
-        # self.name = name
-        # self.counter = counter
-        # self.accuracy = accuracy
-        # self.nitroes_ammo = nitroes_ammo
-        # self.password = password
-        # self.wpm = wpm
-        # self.username = username
-        # self.waittime = waittime
-        # self.safe_mode = safe_mode
-        # self.plac = plac
-        # self.uid = uid
-        #
         run[str(ctx.author.id)] = True
-        # thread1 = myThread(
-        #     len(threads) + 1,
-        #     f"THREAD-{len(threads) + 1}",
-        #     3,
-        #     accuracy,
-        #     nitroes_ammo,
-        #     password,
-        #     wpm,
-        #     username,
-        #     waittime,
-        #     safe_mode,
-        #     plac,
-        #     ctx.author.id,
-        # )
-
         thread1 = myThread(
             f"Thread{len(threads) + 1}",
             1,
@@ -325,13 +248,6 @@ PASSWORD
         threads.append(thread1)
         thread1.setDaemon(True)
         thread1.start()
-
-        # thread1.setDaemon(True)
-        # thread1.run()
-        # threads.append(thread1)
-
-        # print( system( f"nohup nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t
-        # {waittime} -S {safe_mode} -f {plac}nitro_cfg.json > {logfile}.txt &" ) )
         with open("data.json") as f:
             config = json.load(f)  # type: dict
         config["users"][f"{ctx.author.id}"] = f"{username}"
@@ -344,9 +260,6 @@ PASSWORD
 
         await ctx.send(f"Started bot {username}")
         with open("data.json", "w") as ff:
-            cf = config
-            # cf = str(cf).replace("'", '"').replace(True, 'true')
-            # ff.writelines(f"""{cf}""")
             json.dump(config, ff)
 
 
