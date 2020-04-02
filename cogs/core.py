@@ -6,7 +6,7 @@ import discord
 import json
 from os import system
 
-from utils.checks import permitted
+from utils.checks import permitted, running
 
 
 def data():
