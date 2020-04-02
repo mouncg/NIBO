@@ -113,7 +113,7 @@ PASSWORD
     @commands.check(permitted)
     async def _stop(self, ctx: commands.Context):
         global run
-        run[ctx.author.id] = False
+        run[str(ctx.author.id)] = False
         await ctx.send("the bot will stop after the race!")
 
     @commands.command(name="list_running", hidden=True)
