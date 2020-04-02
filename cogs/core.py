@@ -67,7 +67,6 @@ class myThread(threading.Thread):
         # Acquire lock to synchronize thread
         threadLock.acquire()
         print(f"{self.name} [--+--] {self.counter}")
-        self.setDaemon(True)
         print(f"{self.name} [--+--] started the daemon")
         runner(
             self.accuracy,
@@ -323,6 +322,7 @@ PASSWORD
             ctx.author.id,
         )
         threads.append(thread1)
+        thread1.setDaemon(True)
         thread1.start()
 
         # thread1.setDaemon(True)
