@@ -197,6 +197,8 @@ RUNNING
         threads = threads  # type: list
         for thread in threads:
             if thread.username == f"{username}":
+                thread.join()
+                print(f"[{thread.name}] STOPPING THREAD")
                 threads.remove(thread)
         with open("data.json", "w") as ff:
             json.dump(config, ff)
