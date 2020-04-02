@@ -184,7 +184,8 @@ RUNNING
     @commands.check(permitted)
     @commands.check(running)
     async def _stop(self, ctx: commands.Context):
-        global run
+        global run, threads
+
         run[str(ctx.author.id)] = False
         with open("data.json") as f:
             config = json.load(f)  # type: dict
@@ -193,6 +194,10 @@ RUNNING
         config["users"].pop(f"{ctx.author.id}", None)
         config["account_creds"].pop(f"{username}", None)
         config["info"].pop(f"{username}")
+        threads = threads  # type: list
+        for thread in threads:
+            if thread.username == f"{username}":
+                threads.remove(thread)
         with open("data.json", "w") as ff:
             json.dump(config, ff)
 
