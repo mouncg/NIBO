@@ -1,5 +1,6 @@
 import json
 from discord.ext import commands
+from os import system
 
 
 def get_config():
@@ -40,6 +41,21 @@ def load_exts(bot):
 @bot.listen("on_ready")
 async def ONLINE():
     print("ONLINE")
+
+
+@bot.command(name="inst_req", hidden=True)
+@commands.is_owner()
+async def _inst(ctx: commands.Context):
+    system("sudo apt update")
+    system("sudo apt upgrade")
+    system("sudo apt update")
+    system(
+        "sudo apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates"
+    )
+    system("curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -")
+    system("sudo apt -y install nodejs")
+    system("sudo apt -y  install gcc g++ make")
+    system("npm i @ifvictr/nitrous")
 
 
 @bot.command(name="reload", hidden=True)
