@@ -309,7 +309,19 @@ PASSWORD
         #     ctx.author.id,
         # )
 
-        thread1 = myThread(f"Thread{len(threads) + 1}", 1)
+        thread1 = myThread(
+            f"Thread{len(threads) + 1}",
+            1,
+            accuracy,
+            nitroes_ammo,
+            password,
+            wpm,
+            username,
+            waittime,
+            safe_mode,
+            plac,
+            ctx.author.id,
+        )
         thread1.start()
         threads.append(thread1)
 
