@@ -10,6 +10,7 @@ class ErrorHandler(commands.Cog):
     async def on_command_error(
         self, ctx: commands.Context, error: commands.CommandError
     ):
+        print(f"{error}")
         await ctx.message.add_reaction("❌")
 
         if isinstance(error, commands.MissingRequiredArgument):
