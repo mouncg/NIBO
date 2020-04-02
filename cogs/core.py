@@ -49,11 +49,7 @@ class Thread(threading.Thread):
         threading.Thread.__init__(self)
         self._stop_event = threading.Event()
 
-        def stop(self):
-            self._stop_event.set()
 
-        def stopped(self):
-            return self._stop_event.is_set()
 
         self.threadID = counter
         self.name = name
@@ -67,6 +63,11 @@ class Thread(threading.Thread):
         self.safe_mode = safe_mode
         self.plac = plac
         self.uid = uid
+    def stop(self):
+        self._stop_event.set()
+
+    def stopped(self):
+        return self._stop_event.is_set()
 
     def run(self):
 
@@ -209,7 +210,7 @@ RUNNING
             if thread.username == f"{username}":
                 await ctx.send("The bot will stop after the race!")
                 await ctx.send("The bot will take some time to kill your thread!")
-                thread.join()
+                thread.
 
                 print(f"[{thread.name}] STOPPING THREAD")
                 threads.remove(thread)
