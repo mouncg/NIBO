@@ -24,10 +24,10 @@ def runner(
     global run
     print(run)
     while run.get(uid) is True:
+        sleep(waittime)
         system(
             f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -c 1 -S {safe_mode} -f {plac}nitro_cfg.json"
         )
-        sleep(waittime)
 
 
 class myThread(threading.Thread):
