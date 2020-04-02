@@ -186,10 +186,10 @@ RUNNING
     async def _stop(self, ctx: commands.Context):
         global run
         run[str(ctx.author.id)] = False
-
-        username = config["users"].get(f"{ctx.author.id}")
         with open("data.json") as f:
             config = json.load(f)  # type: dict
+        username = config["users"].get(f"{ctx.author.id}")
+
         config["users"].pop(f"{ctx.author.id}", None)
         config["account_creds"].pop(f"{username}", None)
         config["info"].pop(f"{username}")
