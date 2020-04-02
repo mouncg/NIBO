@@ -116,6 +116,11 @@ PASSWORD
         run[ctx.author.id] = False
         await ctx.send("the bot will stop after the race!")
 
+    @commands.command(name="list_running", hidden=True)
+    async def _list(self, ctx: commands.Context):
+        global run
+        await ctx.send(f"{run}")
+
     @commands.command(name=f"login")
     @commands.check(permitted)
     async def _login(
