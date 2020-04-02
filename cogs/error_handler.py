@@ -12,7 +12,10 @@ class ErrorHandler(commands.Cog):
     ):
         await ctx.message.add_reaction("❌")
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(f"{error}")
+            if f"{error}" == f"safe_mode is a required argument that is missing.":
+                await ctx.send("SET this to `True`/`False`!")
+            else:
+                await ctx.send(f"{error}")
 
 
 def setup(bot):
