@@ -152,7 +152,7 @@ PASSWORD
         waittime = 29
 
         logfile = random.randint(0, 1000)
-        t1 = threading.Thread(
+        t1 = await threading.Thread(
             target=runner,
             args=(
                 accuracy,
