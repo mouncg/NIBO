@@ -1,3 +1,4 @@
+import asyncio
 import random
 import threading
 from time import sleep
@@ -19,14 +20,14 @@ def data():
 run = {}
 
 
-def runner(
+async def runner(
     accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid
 ):
     while run.get(uid) is True:
         system(
             f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -c 1 -S {safe_mode} -f {plac}nitro_cfg.json"
         )
-        sleep(waittime)
+        await asyncio.sleep(waittime)
 
 
 class Core(commands.Cog):
@@ -120,7 +121,7 @@ PASSWORD
     @commands.is_owner()
     async def _list(self, ctx: commands.Context):
         global run
-        await ctx.send(f"{run}")
+        await ctx.send(f"```py\n{run}\n```")
 
     @commands.command(name=f"login")
     @commands.check(permitted)
@@ -167,7 +168,7 @@ PASSWORD
             daemon=True,
         )
         run[str(ctx.author.id)] = True
-        t1.start()
+        await t1.start()
 
         # print( system( f"nohup nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t
         # {waittime} -S {safe_mode} -f {plac}nitro_cfg.json > {logfile}.txt &" ) )
