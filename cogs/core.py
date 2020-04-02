@@ -35,7 +35,6 @@ def runner(
 class myThread(threading.Thread):
     def __init__(
         self,
-        threadID,
         name,
         counter,
         accuracy,
@@ -49,7 +48,7 @@ class myThread(threading.Thread):
         uid,
     ):
         threading.Thread.__init__(self)
-        self.threadID = threadID
+        self.threadID = counter
         self.name = name
         self.counter = counter
         self.accuracy = accuracy
@@ -61,11 +60,15 @@ class myThread(threading.Thread):
         self.safe_mode = safe_mode
         self.plac = plac
         self.uid = uid
-        self.setDaemon(True)
 
     def run(self):
-        # Get lock to synchronize threads
+
+        print("\nStarting " + self.name)
+        # Acquire lock to synchronize thread
         threadLock.acquire()
+        print(f"{self.name} [--+--] {self.counter}")
+        self.setDaemon(True)
+        print(f"{self.name} [--+--] started the daemon")
         runner(
             self.accuracy,
             self.nitroes_ammo,
@@ -77,12 +80,66 @@ class myThread(threading.Thread):
             self.plac,
             self.uid,
         )
-        # Free lock to release next thread
+        # Release lock for the next thread
         threadLock.release()
+        print("Exiting " + self.name)
 
 
 threadLock = threading.Lock()
 threads = []
+
+
+# class myThread(threading.Thread):
+#     def __init__(
+#         self,
+#         threadID,
+#         name,
+#         counter,
+#         accuracy,
+#         nitroes_ammo,
+#         password,
+#         wpm,
+#         username,
+#         waittime,
+#         safe_mode,
+#         plac,
+#         uid,
+#     ):
+#         threading.Thread.__init__(self)
+#         self.threadID = threadID
+#         self.name = name
+#         self.counter = counter
+#         self.accuracy = accuracy
+#         self.nitroes_ammo = nitroes_ammo
+#         self.password = password
+#         self.wpm = wpm
+#         self.username = username
+#         self.waittime = waittime
+#         self.safe_mode = safe_mode
+#         self.plac = plac
+#         self.uid = uid
+#         self.setDaemon(True)
+#
+#     def run(self):
+#         # Get lock to synchronize threads
+#         threadLock.acquire()
+#         runner(
+#             self.accuracy,
+#             self.nitroes_ammo,
+#             self.password,
+#             self.wpm,
+#             self.username,
+#             self.waittime,
+#             self.safe_mode,
+#             self.plac,
+#             self.uid,
+#         )
+#         # Free lock to release next thread
+#         threadLock.release()
+#
+#
+# threadLock = threading.Lock()
+# threads = []
 
 
 class Core(commands.Cog):
@@ -237,23 +294,28 @@ PASSWORD
         # self.uid = uid
         #
         run[str(ctx.author.id)] = True
-        thread1 = myThread(
-            len(threads) + 1,
-            f"THREAD-{len(threads) + 1}",
-            3,
-            accuracy,
-            nitroes_ammo,
-            password,
-            wpm,
-            username,
-            waittime,
-            safe_mode,
-            plac,
-            ctx.author.id,
-        )
-        thread1.setDaemon(True)
-        thread1.run()
+        # thread1 = myThread(
+        #     len(threads) + 1,
+        #     f"THREAD-{len(threads) + 1}",
+        #     3,
+        #     accuracy,
+        #     nitroes_ammo,
+        #     password,
+        #     wpm,
+        #     username,
+        #     waittime,
+        #     safe_mode,
+        #     plac,
+        #     ctx.author.id,
+        # )
+
+        thread1 = myThread(f"Thread{len(threads) + 1}", 1)
+        thread1.start()
         threads.append(thread1)
+
+        # thread1.setDaemon(True)
+        # thread1.run()
+        # threads.append(thread1)
 
         # print( system( f"nohup nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t
         # {waittime} -S {safe_mode} -f {plac}nitro_cfg.json > {logfile}.txt &" ) )
