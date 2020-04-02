@@ -197,13 +197,16 @@ RUNNING
         threads = threads  # type: list
         for thread in threads:
             if thread.username == f"{username}":
+                await ctx.send("The bot will stop after the race!")
+                await ctx.send("The bot will take some time to kill your thread!")
                 thread.join()
+
                 print(f"[{thread.name}] STOPPING THREAD")
                 threads.remove(thread)
         with open("data.json", "w") as ff:
             json.dump(config, ff)
 
-        return await ctx.send("the bot will stop after the race!")
+        return await ctx.send("FINISHED KILLING BOT!")
 
     @commands.command(name="list_running", hidden=True)
     @commands.is_owner()
