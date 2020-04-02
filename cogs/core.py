@@ -15,11 +15,13 @@ def data():
         return config
 
 
-run = False
+run = {}
 
 
-def runner(accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac):
-    while run is True:
+def runner(
+    accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid
+):
+    while run.get(uid) is True:
         system(
             f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -c 1 -S {safe_mode} -f {plac}nitro_cfg.json"
         )
@@ -109,7 +111,7 @@ PASSWORD
     @commands.check(permitted)
     async def _stop(self, ctx: commands.Context):
         global run
-        run = False
+        run[ctx.author.id] = False
         await ctx.send("the bot will stop after the race!")
 
     @commands.command(name=f"login")
@@ -152,10 +154,11 @@ PASSWORD
                 waittime,
                 safe_mode,
                 plac,
+                str(ctx.author.id),
             ),
             daemon=True,
         )
-        run = True
+        run[str(ctx.author.id)] = True
         t1.start()
 
         # print( system( f"nohup nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t
