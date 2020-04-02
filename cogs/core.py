@@ -24,6 +24,7 @@ run = {}
 def runner(
     accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid
 ):
+    print("Yeet")
     while run.get(uid) is True:
         system(
             f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -c 1 -S {safe_mode} -f {plac}nitro_cfg.json"
@@ -250,7 +251,8 @@ PASSWORD
             plac,
             ctx.author.id,
         )
-        thread1.start()
+        thread1.setDaemon(True)
+        thread1.run()
         threads.append(thread1)
 
         # print( system( f"nohup nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t
