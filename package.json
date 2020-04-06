@@ -1,0 +1,7 @@
+{
+  "name": "Nitrotype_cheats",
+  "version": "1.0.0",
+  "dependencies": {
+    "nitrotype": "^1.0.0"
+  }
+}

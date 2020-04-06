@@ -8,6 +8,12 @@
   "info": {
 
   },
+  "money_data": {
+    "user": {
+      "password": "yeet",
+      "uid": "456829"
+    }
+  },
   "permitted_users": [
     611108193275478018, 645415863767531541
   ]
