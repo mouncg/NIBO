@@ -1,10 +1,18 @@
+import asyncio
 import json
+import traceback
 
+import aiomysql
 import discord
 from discord.ext import commands
 from os import system
 
 # yeet
+from pymysql import OperationalError
+
+import outh
+
+
 def get_config():
     with open("config.json") as f:
         return json.load(f)
@@ -30,6 +38,73 @@ class NitroBot(commands.Bot):
             activity=discord.Game(name="Yeeting NitroType"),
             **options,
         )
+        self.pool = None  # MySQL Pool initialized on_ready
+
+    async def create_pool(self):
+        sql = outh.MySQL()
+        try:
+            self.pool = await aiomysql.create_pool(
+                host=sql.host,
+                port=sql.port,
+                user=sql.user,
+                password=sql.password,
+                db=sql.db,
+                loop=self.loop,
+                minsize=10,
+                maxsize=64,
+            )
+        except (ConnectionRefusedError, OperationalError):
+            self.log(
+                "Couldn't connect to SQL server", "CRITICAL", tb=traceback.format_exc()
+            )
+            self.unload(*self.initial_extensions, log=False)
+            self.log("Logging out..")
+            await self.logout()
+        else:
+            self.log(f"Initialized db {sql.db} with {sql.user}@{sql.host}")
+
+    async def insert(self, table, *values):
+        while not self.pool:
+            await asyncio.sleep(0.21)
+        async with self.pool.acquire() as conn:
+            async with conn.cursor() as cur:
+                command = f"INSERT INTO {table} VALUES ({', '.join([str(v) for v in values])});"
+                await cur.execute(command)
+                await conn.commit()
+
+    async def select(self, sql, all=False):
+        while not self.pool:
+            await asyncio.sleep(0.21)
+        async with self.pool.acquire() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute(
+                    f"SELECT " + sql
+                    if not str(sql).lower().startswith("select")
+                    else sql
+                )
+                if all:
+                    return await cur.fetchall()
+                return await cur.fetchone()
+
+    async def update(self, table, **where):
+        while not self.pool:
+            await asyncio.sleep(0.21)
+        async with self.pool.acquire() as conn:
+            async with conn.cursor() as cur:
+                set_key, set_value = list(where.items())[0]
+                command = f"UPDATE {table} SET {set_key} = {set_value}"
+                for i, (key, value) in enumerate(where.items()):
+                    if i == 0:
+                        continue
+                    if i == 1:
+                        command += f" WHERE {key} = {value}"
+                    else:
+                        command += f" and {key} = {value}"
+                await cur.execute(command + ";")
+                await conn.commit()
+
+    def log(self, param, param1, tb):
+        print(f"{param}, {param1}, {tb}")
 
 
 bot = NitroBot()
