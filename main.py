@@ -1,4 +1,6 @@
 import json
+
+import discord
 from discord.ext import commands
 from os import system
 
@@ -21,7 +23,16 @@ def get_prefix(bot, msg):
     return commands.when_mentioned_or(prefixes[guild_id])(bot, msg)
 
 
-bot = commands.Bot(command_prefix=get_prefix, case_insensitive=True)
+class NitroBot(commands.Bot):
+    def __init__(self, **options):
+        super().__init__(
+            command_prefix=get_prefix,
+            activity=discord.Game(name="Yeeting NitroType"),
+            **options,
+        )
+
+
+bot = NitroBot
 bot.default_prefix, bot.description = (
     "!",
     f"This bot is to cheat on the web game Nitrotype (https://nitrotype.com) "
