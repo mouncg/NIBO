@@ -14,4 +14,8 @@ class OwnerCommands(commands.Cog):
 
 
 def setup(bot):
+    """
+
+    :param bot:
+    """
     bot.add_cog(OwnerCommands(bot))
