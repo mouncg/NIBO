@@ -7,9 +7,10 @@ class OwnerCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
+    @commands.is_owner()
     @commands.command(name="add_user")
     async def add_user(self, ctx: commands.Context, user: greedy[discord.User]):
-        return ctx.send(f"{user}")
+        return await ctx.send(f"{user}")
 
 
 def setup(bot):
