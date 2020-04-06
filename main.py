@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 from os import system
 
-
+# yeet
 def get_config():
     with open("config.json") as f:
         return json.load(f)
