@@ -32,7 +32,7 @@ class NitroBot(commands.Bot):
         )
 
 
-bot = NitroBot
+bot = NitroBot()
 bot.default_prefix, bot.description = (
     "!",
     f"This bot is to cheat on the web game Nitrotype (https://nitrotype.com) "
