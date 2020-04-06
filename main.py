@@ -1,4 +1,5 @@
 import asyncio
+from datetime import datetime
 import json
 import traceback
 
@@ -59,7 +60,6 @@ class NitroBot(commands.Bot):
             self.log(
                 "Couldn't connect to SQL server", "CRITICAL", tb=traceback.format_exc()
             )
-            self.unload(*self.initial_extensions, log=False)
             self.log("Logging out..")
             await self.logout()
         else:
