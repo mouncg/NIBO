@@ -157,7 +157,6 @@ async def ONLINE():
 @bot.listen(name="on_ready")
 async def mysql_init():
     await bot.create_pool()
-    print(f"STARTED MYSQL")
 
 
 @bot.command(name="inst_req", hidden=True)
