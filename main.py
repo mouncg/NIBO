@@ -22,11 +22,15 @@ def get_prefix(bot, msg):
 
 
 bot = commands.Bot(command_prefix=get_prefix, case_insensitive=True)
-bot.default_prefix = "!"
+bot.default_prefix, bot.description = (
+    "!",
+    f"This bot is to cheat on the web game Nitrotype (https://nitrotype.com) "
+    f"and will allow you to yeet people and gain moneyyyz",
+)
 with open("config.json") as f:
     bot.config = json.load(f)
     bot.owner_id = 611108193275478018
-initial_extensions = ["cogs.core", "cogs.error_handler"]
+initial_extensions = ["cogs.core", "cogs.error_handler", "cogs.owner"]
 
 
 def load_exts(bot):
