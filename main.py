@@ -4,6 +4,7 @@ import traceback
 
 import aiomysql
 import discord
+from cprint import cprint
 from discord.ext import commands
 from os import system
 
@@ -39,6 +40,7 @@ class NitroBot(commands.Bot):
             **options,
         )
         self.pool = None  # MySQL Pool initialized on_ready
+        self.logs = []
 
     async def create_pool(self):
         sql = outh.MySQL()
@@ -103,8 +105,27 @@ class NitroBot(commands.Bot):
                 await cur.execute(command + ";")
                 await conn.commit()
 
-    def log(self, param, param1, tb):
-        print(f"{param}, {param1}, {tb}")
+    def log(self, message, level="INFO", tb=None, color=None):
+        if level == "DEBUG" and not self.debug_mode:
+            return
+        now = str(datetime.now().strftime("%I:%M%p"))
+        if now.startswith("0"):
+            now = now.replace("0", "", 1)
+        lines = []
+        for line in message.split("\n"):
+            msg = f"{now} | {level} | {line}"
+            if level == "DEBUG" and self.config["debug_mode"]:
+                cprint(msg, color if color else "cyan")
+            elif level == "INFO":
+                cprint(msg, color if color else "green")
+            elif level == "CRITICAL":
+                cprint(msg, color if color else "red")
+            lines.append(msg)
+        if tb:
+            cprint(str(tb), color if color else "red")
+            lines.append(str(tb))
+        self.logs.append("\n".join(lines))
+        self.logs = self.logs[:1000]
 
 
 bot = NitroBot()
@@ -130,7 +151,12 @@ def load_exts(bot):
 
 @bot.listen("on_ready")
 async def ONLINE():
-    print("ONLINE")
+    print("THE BOT IS ONLINE")
+
+
+@bot.listen(name="on_ready")
+async def mysql_init():
+    await bot.create_pool()
 
 
 @bot.command(name="inst_req", hidden=True)
