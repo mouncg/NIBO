@@ -11,6 +11,7 @@ class OwnerCommands(commands.Cog):
     @commands.is_owner()
     @commands.command(name="add_user")
     async def add_user(self, ctx: commands.Context, user: greedy[discord.User]):
+        print(user)
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cur:
                 await cur.execute(f"insert into whitelisted_users value {user.id}")
