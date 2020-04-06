@@ -16,6 +16,7 @@ def data():
 
 
 run = {}
+money_run = {}
 
 
 def runner(
@@ -72,7 +73,7 @@ class Thread(threading.Thread):
 
         print("\nStarting " + self.name)
         # Acquire lock to synchronize thread
-        threadLock.acquire()
+        # threadLock.acquire()
         print(f"{self.name} [--+--] {self.counter}")
         print(f"{self.name} [--+--] started the daemon")
         runner(
@@ -87,7 +88,7 @@ class Thread(threading.Thread):
             self.uid,
         )
         # Release lock for the next thread
-        threadLock.release()
+        # threadLock.release()
         print("Exiting " + self.name)
 
 
