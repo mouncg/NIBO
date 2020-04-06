@@ -10,7 +10,7 @@ class OwnerCommands(commands.Cog):
     @commands.is_owner()
     @commands.command(name="add_user")
     async def add_user(self, ctx: commands.Context, user: greedy[discord.User]):
-
+        return
 
 
 def setup(bot):
