@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Greedy as greedy
 
-
+# yee
 class OwnerCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
