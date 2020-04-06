@@ -115,26 +115,14 @@ class NitroBot(commands.Bot):
         for line in message.split("\n"):
             msg = f"{now} | {level} | {line}"
             if level == "DEBUG" and self.config["debug_mode"]:
-                if color:
-                    cprint(msg, color)
-                else:
-                    cprint(msg, "cyan")
+                cprint(msg, color if color else "cyan")
             elif level == "INFO":
-                if color:
-                    cprint(msg, color)
-                else:
-                    cprint(msg, "green")
+                cprint(msg, color if color else "green")
             elif level == "CRITICAL":
-                if color:
-                    cprint(msg, color)
-                else:
-                    cprint(msg, "red")
+                cprint(msg, color if color else "red")
             lines.append(msg)
         if tb:
-            if color:
-                cprint(str(tb), color)
-            else:
-                cprint(str(tb), "red")
+            cprint(str(tb), color if color else "red")
             lines.append(str(tb))
         self.logs.append("\n".join(lines))
         self.logs = self.logs[:1000]
