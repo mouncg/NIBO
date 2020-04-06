@@ -5,7 +5,7 @@ import traceback
 
 import aiomysql
 import discord
-from cprint import cprint
+from cprint.cprint import *
 from discord.ext import commands
 from os import system
 
