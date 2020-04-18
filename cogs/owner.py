@@ -16,7 +16,7 @@ class OwnerCommands(commands.Cog):
 
                 await cur.execute(
                     # f"insert into whitelisted_users values (`{user[0].id}`)"
-                    "REPLACE INTO `whitelisted_users`(`user_id`) VALUES (`{}`);".format(
+                    "REPLACE INTO `whitelisted_users`(`user_id`) VALUES ('{}');".format(
                         user[0].id
                     )
                 )
