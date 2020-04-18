@@ -23,7 +23,7 @@ class OwnerCommands(commands.Cog):
                     )
                 )
                 await conn.commit()
-                await conn.close()
+                conn.close()
                 results = await cur.fetchone()
         if f"{results}" == f"None":
             results = f"{user[0]} has been added to the whitelisted users!"
