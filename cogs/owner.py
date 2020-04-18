@@ -9,13 +9,14 @@ class OwnerCommands(commands.Cog):
         self.bot = bot
 
     @commands.is_owner()
-    @commands.command(name="add_user")
+    @commands.command(name="add_user", hidden=True)
     async def add_user(self, ctx: commands.Context, user: greedy[discord.User]):
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cur:
 
                 await cur.execute(
-                    f"insert into whitelisted_users values ('{user[0].id}')"
+                    # f"insert into whitelisted_users values (`{user[0].id}`)"
+                    f"REPLACE INTO `whitelisted_users`(`user_id`) VALUES (`user[0].id`);"
                 )
                 results = await cur.fetchone()
         if f"{results}" == f"None":

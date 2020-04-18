@@ -98,7 +98,7 @@ threads = []
 
 class Core(commands.Cog):
     """
-
+    Core things
     """
 
     def __init__(self, bot):
