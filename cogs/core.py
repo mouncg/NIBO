@@ -260,8 +260,9 @@ RUNNING
         print(res)
         # if str(user_id) not in res:
         #     return
+        lst = []
         for re in res:
-            print(re[0])
+            lst.append(re[0])
         global run, threads
 
         accuracy = float(accuracy)
