@@ -16,7 +16,7 @@ def permitted(ctx: commands.Context):
     query = (
         f"SELECT `user_id` FROM `whitelisted_users` WHERE `user_id`='{ctx.author.id}'"
     )
-    res = bot.select(sql=query)
+    res = bot.select(self=bot, sql=query)
     # return ctx.author.id in data.get("permitted_users") or ctx.author.id in config.get(
     #     "admin_ids"
     # )
