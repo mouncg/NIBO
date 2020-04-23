@@ -244,7 +244,9 @@ RUNNING
         :param safe_mode:
         :return:
         """
-        query = f"SELECT `user_id` FROM `whitelisted_users` WHERE `user_id`='{ctx.author.id}'"
+        query = "SELECT `user_id` FROM `whitelisted_users` WHERE `user_id`='{}'".format(
+            ctx.author.id
+        )
         res = await self.bot.select(sql=query)
         # return ctx.author.id in data.get("permitted_users") or ctx.author.id in config.get(
         #     "admin_ids"
