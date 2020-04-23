@@ -41,7 +41,7 @@ class OwnerCommands(commands.Cog):
                 conn.close()
                 results = await cur.fetchone()
         if f"{results}" == f"None":
-            results = f"{user[0]} has been added to the whitelisted users!"
+            results = f"{user[0]} has been removed from the whitelisted users!"
         return await ctx.send(f" ✅| {results}")
 
 
