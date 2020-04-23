@@ -264,6 +264,7 @@ RUNNING
         # create list of allowed
         for re in res:
             lst.append(re[0])
+        print(lst)
         if str(user_id) not in lst:
             await ctx.send("nO")
             return
