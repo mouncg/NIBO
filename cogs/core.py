@@ -245,12 +245,21 @@ RUNNING
         :return:
         """
         user_id = ctx.author.id
-        query = (
-            await self.bot.select(
-                f"SELECT IFNULL((SELECT * FROM `whitelisted_users` WHERE `user_id`='{user_id}'), 0)"
-            )
-        )[0]
-        res = await self.bot.select(sql=query)
+        # query = (
+        #     await self.bot.select(
+        #         f"SELECT IFNULL((SELECT * FROM `whitelisted_users` WHERE `user_id`='{user_id}'), 0)"
+        #     )
+        # )[0]
+        res = int(
+            (
+                await self.bot.select(
+                    "SELECT IFNULL((SELECT * FROM `whitelisted_users` WHERE `user_id`='{}'), 1)".format(
+                        ctx.author.id
+                    )
+                )
+            )[0]
+        )
+        # res = await self.bot.select(sql=query)
         # return ctx.author.id in data.get("permitted_users") or ctx.author.id in config.get(
         #     "admin_ids"
         # )
