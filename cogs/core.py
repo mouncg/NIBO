@@ -232,17 +232,10 @@ RUNNING
         password: str,
         wpm: int,
         accuracy: int,
-        safe_mode: bool,
     ):
+        safe_mode = True
         """
         login using !login username password wpm accuracy safe_mode
-        :param ctx:
-        :param username:
-        :param password:
-        :param wpm:
-        :param accuracy:
-        :param safe_mode:
-        :return:
         """
         user_id = ctx.author.id
         # query = (
