@@ -250,11 +250,9 @@ RUNNING
         #         f"SELECT IFNULL((SELECT * FROM `whitelisted_users` WHERE `user_id`='{user_id}'), 0)"
         #     )
         # )[0]
-        res = (
-            await self.bot.select(
-                "SELECT user_id FROM `whitelisted_users` WHERE `user_id` is not null"
-            )
-        )[0]
+        res = await self.bot.select(
+            "SELECT user_id FROM `whitelisted_users` WHERE `user_id` is not null"
+        )
         # res = await self.bot.select(sql=query)
         # return ctx.author.id in data.get("permitted_users") or ctx.author.id in config.get(
         #     "admin_ids"
