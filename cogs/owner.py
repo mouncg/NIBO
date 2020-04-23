@@ -28,7 +28,7 @@ class OwnerCommands(commands.Cog):
         return await ctx.send(f" ✅| {results}")
 
     @commands.is_owner()
-    @commands.command(name="add_user", hidden=True)
+    @commands.command(name="del_user", hidden=True)
     async def del_user(self, ctx: commands.Context, user: greedy[discord.User]):
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cur:
