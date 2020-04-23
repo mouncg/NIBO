@@ -9,6 +9,14 @@ class OwnerCommands(commands.Cog):
     def __init__(self, bot: NitroBot):
         self.bot = bot
 
+    @commands.command(name="load", hidden=True)
+    @commands.is_owner()
+    async def _load(self, ctx: commands.Context, *exts):
+        for i in exts:
+            self.bot.load_extension(f"cogs.{i}")
+            await ctx.send(f"reloaded {i}")
+        await ctx.send(f"loaded {exts}")
+
     @commands.is_owner()
     @commands.command(name="add_user", hidden=True)
     async def add_user(self, ctx: commands.Context, user: greedy[discord.User]):

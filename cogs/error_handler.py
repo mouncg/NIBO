@@ -12,6 +12,7 @@ class ErrorHandler(commands.Cog):
     ):
         print(f"{error}")
         await ctx.message.add_reaction("❌")
+        await self.bot.get_channel(702987609575522330).send(f"{error}")
 
         if isinstance(error, commands.MissingRequiredArgument):
             if f"{error}" == f"safe_mode is a required argument that is missing.":
