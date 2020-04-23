@@ -261,7 +261,7 @@ RUNNING
         # if str(user_id) not in res:
         #     return
         for re in res:
-            print(re)
+            print(re[0])
         global run, threads
 
         accuracy = float(accuracy)
