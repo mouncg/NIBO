@@ -258,8 +258,10 @@ RUNNING
         #     "admin_ids"
         # )
         print(res)
-        if str(user_id) not in res:
-            return
+        # if str(user_id) not in res:
+        #     return
+        for re in res:
+            print(re)
         global run, threads
 
         accuracy = float(accuracy)
