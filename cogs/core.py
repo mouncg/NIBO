@@ -265,6 +265,7 @@ RUNNING
         for re in res:
             lst.append(re[0])
         print(lst)
+        print([str(ctx.author.id)])
         if str(ctx.author.id) not in lst:
             await ctx.send("nO")
             return
