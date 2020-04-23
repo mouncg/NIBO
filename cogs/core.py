@@ -265,6 +265,7 @@ RUNNING
         for re in res:
             lst.append(re[0])
         if str(user_id) not in lst:
+            await ctx.send("nO")
             return
         global run, threads
 
