@@ -244,15 +244,20 @@ RUNNING
         :param safe_mode:
         :return:
         """
-        query = "SELECT `user_id` FROM `whitelisted_users` WHERE `user_id`='{}'".format(
-            ctx.author.id
-        )
+        user_id = ctx.author.id
+        query = (
+            await self.bot.select(
+                f"SELECT IFNULL((SELECT `user_id` FROM `whitelisted_users` WHERE `user_id`='{user_id}'), 0)"
+            )
+        )[0]
         res = await self.bot.select(sql=query)
         # return ctx.author.id in data.get("permitted_users") or ctx.author.id in config.get(
         #     "admin_ids"
         # )
         print(res)
-        if res is not True:
+        if res:
+            pass
+        else:
             return
         global run, threads
 
