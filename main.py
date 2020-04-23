@@ -159,10 +159,10 @@ async def mysql_init():
     await bot.create_pool()
 
 
-@bot.command(name="inst_req", hidden=True)
-@commands.is_owner()
-async def _inst(ctx: commands.Context):
-    system("npm i @ifvictr/nitrous")
+# @bot.command(name="inst_req", hidden=True)
+# @commands.is_owner()
+# async def _inst(ctx: commands.Context):
+#     system("npm i @ifvictr/nitrous")
 
 
 @bot.command(name="reload", hidden=True)
@@ -172,12 +172,6 @@ async def _reload(ctx: commands.Context, *exts):
         bot.reload_extension(f"cogs.{i}")
         await ctx.send(f"reloaded {i}")
     await ctx.send(f"reloaded {exts}")
-
-
-@bot.command("testbot")
-@commands.is_owner()
-async def testbot(ctx: commands.Context):
-    await ctx.send("Sup, I am online!")
 
 
 if __name__ == "__main__":

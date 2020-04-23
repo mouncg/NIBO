@@ -108,7 +108,6 @@ class Core(commands.Cog):
     async def ping(self, ctx: commands.Context):
         """
         check if the bot is online.
-        :param ctx:
         """
         await ctx.send("Ping!")
 
@@ -116,8 +115,6 @@ class Core(commands.Cog):
     async def _info(self, ctx: commands.Context):
         """
         info!
-        :param ctx:
-        :return:
         """
         config = data()
         users = config["users"]  # type: dict
@@ -151,8 +148,6 @@ class Core(commands.Cog):
     async def show(self, ctx: commands.Context):
         """
         show info, useful for troubleshooting, shows private info.
-        :param ctx:
-        :return:
         """
         config = data()
         users = config["users"]  # type: dict
@@ -170,9 +165,7 @@ RUNNING
     @show.command(name="running")
     async def show_running(self, ctx: commands.Context):
         """
-
-        :param ctx:
-        :return:
+        show running bots!
         """
         config = data()
         uname = config["users"][str(ctx.author.id)]
@@ -185,7 +178,6 @@ RUNNING
     async def uname(self, ctx: commands.Context):
         """
         password
-        :param ctx:
         """
         config = data()
         pwd = config["account_creds"][config["users"][str(ctx.author.id)]]
