@@ -249,6 +249,7 @@ RUNNING
         # return ctx.author.id in data.get("permitted_users") or ctx.author.id in config.get(
         #     "admin_ids"
         # )
+        print(res)
         if res is not True:
             return
         global run, threads
