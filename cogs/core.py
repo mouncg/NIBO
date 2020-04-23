@@ -259,6 +259,10 @@ RUNNING
             e.set_footer(text=f"Error code 0x001")
             await ctx.send(embed=e)
             return
+        if running(ctx):
+            await ctx.send(
+                "⚠|THE BOT IS ALREADY RUNNING! THIS COULD BREAK SOME THINGS!!!!"
+            )
         global run, threads
 
         accuracy = float(accuracy)
