@@ -261,8 +261,11 @@ RUNNING
         # if str(user_id) not in res:
         #     return
         lst = []
+        # create list of allowed
         for re in res:
             lst.append(re[0])
+        if str(user_id) not in lst:
+            return
         global run, threads
 
         accuracy = float(accuracy)
