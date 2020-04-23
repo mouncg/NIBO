@@ -5,8 +5,8 @@ from discord.ext import commands
 import discord
 import json
 from os import system
-
-from utils.checks import permitted, running
+from main import NitroBot
+from utils.checks import running
 
 
 def data():
@@ -102,7 +102,7 @@ class Core(commands.Cog):
     """
 
     def __init__(self, bot):
-        self.bot = bot  # type: commands.Bot
+        self.bot = bot  # type: NitroBot
 
     @commands.command("ping")
     async def ping(self, ctx: commands.Context):
@@ -192,7 +192,6 @@ RUNNING
         await ctx.send(f"Password for {config['users'][str(ctx.author.id)]}: ||{pwd}||")
 
     @commands.command(name="stop")
-    @commands.check(permitted)
     @commands.check(running)
     async def _stop(self, ctx: commands.Context):
         global run, threads
@@ -226,7 +225,6 @@ RUNNING
         await ctx.send(f"```py\n{run}\n```")
 
     @commands.command(name=f"login")
-    @commands.check(permitted)
     async def _login(
         self,
         ctx: commands.Context,
@@ -246,7 +244,15 @@ RUNNING
         :param safe_mode:
         :return:
         """
+        query = f"SELECT `user_id` FROM `whitelisted_users` WHERE `user_id`='{ctx.author.id}'"
+        res = await self.bot.select(sql=query)
+        # return ctx.author.id in data.get("permitted_users") or ctx.author.id in config.get(
+        #     "admin_ids"
+        # )
+        if res is not True:
+            return
         global run, threads
+
         accuracy = float(accuracy)
         accuracy /= 100
         plac = "/home/epfforce/Programming/python/"
