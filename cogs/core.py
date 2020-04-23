@@ -258,7 +258,7 @@ RUNNING
         #     "admin_ids"
         # )
         print(res)
-        if user_id not in res:
+        if str(user_id) not in res:
             return
         global run, threads
 
