@@ -267,7 +267,12 @@ RUNNING
         print(lst)
         print([str(ctx.author.id)])
         if str(ctx.author.id) not in lst:
-            await ctx.send("nO")
+            e = discord.Embed(
+                color=0x64FF00,
+                title=f"You do not have the permissions to run this command!",
+            )
+            e.set_footer(text=f"Error code 0x001")
+            await ctx.send(embed=e)
             return
         global run, threads
 
