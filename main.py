@@ -136,7 +136,7 @@ bot.default_prefix, bot.description = (
 )
 with open("config.json") as f:
     bot.config = json.load(f)
-    bot.owner_id = 611108193275478018
+    bot.owner_ids = bot.config["admin_ids"]
 initial_extensions = ["cogs.core", "cogs.error_handler", "cogs.owner"]
 
 

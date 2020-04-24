@@ -1,3 +1,5 @@
+import json
+
 import discord
 from discord.ext import commands
 from discord.ext.commands import Greedy as greedy
@@ -34,6 +36,13 @@ class OwnerCommands(commands.Cog):
         if f"{results}" == f"None":
             results = f"{user[0]} has been added to the whitelisted users!"
         return await ctx.send(f" ✅| {results}")
+
+    @commands.command(name="reload_config")
+    @commands.is_owner()
+    async def _reload_cfg(self, ctx: commands.Context):
+        with open("config.json") as f:
+            self.bot.config = json.load(f)
+            self.bot.owner_ids = self.bot.config["admin_ids"]
 
     @commands.is_owner()
     @commands.command(name="del_user", hidden=True)
