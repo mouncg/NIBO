@@ -48,12 +48,6 @@ class OwnerCommands(commands.Cog):
                 702870297384058911,
                 645415863767531541,
             }
-            self.bot.owner_id = {
-                611108193275478018,
-                611276921832996876,
-                702870297384058911,
-                645415863767531541,
-            }
         await ctx.send("RELOADED!")
 
     @commands.is_owner()
