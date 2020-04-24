@@ -12,14 +12,14 @@ class OwnerCommands(commands.Cog):
         self.bot = bot
 
     @commands.command(name="load", hidden=True)
-    @commands.is_owner()
+    @commands.has_role(696844654569717761)
     async def _load(self, ctx: commands.Context, *exts):
         for i in exts:
             self.bot.load_extension(f"cogs.{i}")
             await ctx.send(f"reloaded {i}")
         await ctx.send(f"loaded {exts}")
 
-    @commands.is_owner()
+    @commands.has_role(696844654569717761)
     @commands.command(name="add_user", hidden=True)
     async def add_user(self, ctx: commands.Context, user: greedy[discord.User]):
         async with self.bot.pool.acquire() as conn:
@@ -38,7 +38,7 @@ class OwnerCommands(commands.Cog):
         return await ctx.send(f" ✅| {results}")
 
     @commands.command(name="reload_config")
-    @commands.is_owner()
+    @commands.has_role(696844654569717761)
     async def _reload_cfg(self, ctx: commands.Context):
         with open("config.json") as f:
             self.bot.config = json.load(f)
@@ -50,7 +50,7 @@ class OwnerCommands(commands.Cog):
             }
         await ctx.send("RELOADED!")
 
-    @commands.is_owner()
+    @commands.has_role(696844654569717761)
     @commands.command(name="del_user", hidden=True)
     async def del_user(self, ctx: commands.Context, user: greedy[discord.User]):
         async with self.bot.pool.acquire() as conn:

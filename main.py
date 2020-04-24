@@ -166,7 +166,7 @@ async def mysql_init():
 
 
 @bot.command(name="reload", hidden=True)
-@commands.is_owner()
+@commands.has_role(696844654569717761)
 async def _reload(ctx: commands.Context, *exts):
     for i in exts:
         bot.reload_extension(f"cogs.{i}")

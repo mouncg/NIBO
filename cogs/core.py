@@ -212,7 +212,7 @@ RUNNING
         return await ctx.send("FINISHED SETTING THE BOT TO KILL AFTER FINISHED RACE!")
 
     @commands.command(name="list_running", hidden=True)
-    @commands.is_owner()
+    @commands.has_role(696844654569717761)
     async def _list(self, ctx: commands.Context):
         global run
         await ctx.send(f"```py\n{run}\n```")
