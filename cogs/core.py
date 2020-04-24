@@ -116,7 +116,7 @@ class Core(commands.Cog):
         """
         info!
         """
-        return ctx.send("OwO this command is disabled, F")
+        return await ctx.send("OwO this command is disabled, F")
         config = data()
         users = config["users"]  # type: dict
         info = config["info"]
