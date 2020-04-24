@@ -103,21 +103,6 @@ async def fetch(session, url, data):
         return await response.json()
 
 
-async def chk(username, password):
-    async with aiohttp.ClientSession() as session:
-        html = await fetch(
-            session,
-            "https://www.nitrotype.com/api/login",
-            {"username": username, "password": password},
-        )
-        html = str(html).split(",")
-        html = html[0]
-        html = html.split(":")
-        html = html[1]
-        html = html.replace(" ", "")
-        return chk
-
-
 class Core(commands.Cog):
     """
     Core things
@@ -284,9 +269,19 @@ RUNNING
             await ctx.send(
                 "⚠|THE BOT IS ALREADY RUNNING! THIS COULD BREAK SOME THINGS!!!!"
             )
-        await chk(username, password)
-        print([chk(username, password)])
-        if eee != "True" or not True:
+
+            async with aiohttp.ClientSession() as session:
+                html = await fetch(
+                    session,
+                    "https://www.nitrotype.com/api/login",
+                    {"username": username, "password": password},
+                )
+                html = str(html).split(",")
+                html = html[0]
+                html = html.split(":")
+                html = html[1]
+                html = html.replace(" ", "")
+        if html != "True" or html is not True:
             return await ctx.send("INCORRECT USERNAME/PASSOWRD!")
         global run, threads
 
