@@ -242,14 +242,12 @@ RUNNING
         # return ctx.author.id in data.get("permitted_users") or ctx.author.id in config.get(
         #     "admin_ids"
         # )
-        print(res)
         # if str(user_id) not in res:
         #     return
         lst = []
         # create list of allowed
         for re in res:
             lst.append(re[0])
-        print(lst)
         print([str(ctx.author.id)])
         if str(ctx.author.id) not in lst:
             e = discord.Embed(
