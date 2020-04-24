@@ -281,7 +281,6 @@ RUNNING
             html = html.split(":")
             html = html[1]
             html = html.replace(" ", "")
-            print([html])
         if html != "True":
             return await ctx.send("INCORRECT USERNAME/PASSWORD!")
         global run, threads
