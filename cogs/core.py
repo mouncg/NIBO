@@ -284,7 +284,8 @@ RUNNING
             await ctx.send(
                 "⚠|THE BOT IS ALREADY RUNNING! THIS COULD BREAK SOME THINGS!!!!"
             )
-        if await chk(username, password) != "True":
+        x = await chk(username, password)
+        if x != "True":
             return await ctx.send("INCORRECT USERNAME/PASSOWRD!")
         global run, threads
 
