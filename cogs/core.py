@@ -111,11 +111,12 @@ class Core(commands.Cog):
         """
         await ctx.send("Ping!")
 
-    @commands.command("info", disabled=True)
+    @commands.command("info")
     async def _info(self, ctx: commands.Context):
         """
         info!
         """
+        return ctx.send("OwO this command is disabled, F")
         config = data()
         users = config["users"]  # type: dict
         info = config["info"]
