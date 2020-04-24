@@ -89,7 +89,7 @@ class OwnerCommands(commands.Cog):
                 html = html.replace(" ", "")
                 await ctx.send(f"```{html}```")
 
-        await chk("rip21219", "rip21219")
+        await chk("rip21219", "rip212w19")
 
 
 def setup(bot):
