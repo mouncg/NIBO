@@ -111,7 +111,7 @@ class Core(commands.Cog):
         """
         await ctx.send("Ping!")
 
-    @commands.command("info")
+    @commands.command("info", disabled=True)
     async def _info(self, ctx: commands.Context):
         """
         info!
