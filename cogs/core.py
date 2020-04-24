@@ -285,7 +285,7 @@ RUNNING
                 "⚠|THE BOT IS ALREADY RUNNING! THIS COULD BREAK SOME THINGS!!!!"
             )
         x = await chk(username, password)
-        if x != "True":
+        if x != "True" or not True:
             return await ctx.send("INCORRECT USERNAME/PASSOWRD!")
         global run, threads
 
