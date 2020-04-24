@@ -43,6 +43,7 @@ class OwnerCommands(commands.Cog):
         with open("config.json") as f:
             self.bot.config = json.load(f)
             self.bot.owner_ids = self.bot.config["admin_ids"]
+            self.bot.owner_id = self.bot.config["admin_ids"]
         await ctx.send("RELOADED!")
 
     @commands.is_owner()
