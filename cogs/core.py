@@ -1,6 +1,8 @@
 import threading
 from time import sleep
 
+import aiohttp
+import asyncio
 from discord.ext import commands
 import discord
 import json
@@ -94,6 +96,26 @@ class Thread(threading.Thread):
 
 threadLock = threading.Lock()
 threads = []
+
+
+async def fetch(session, url, data):
+    async with session.post(url, data=data) as response:
+        return await response.json()
+
+
+async def chk(username, password):
+    async with aiohttp.ClientSession() as session:
+        html = await fetch(
+            session,
+            "https://www.nitrotype.com/api/login",
+            {"username": username, "password": password},
+        )
+        html = str(html).split(",")
+        html = html[0]
+        html = html.split(":")
+        html = html[1]
+        html = html.replace(" ", "")
+        print(html)
 
 
 class Core(commands.Cog):
@@ -262,6 +284,7 @@ RUNNING
             await ctx.send(
                 "⚠|THE BOT IS ALREADY RUNNING! THIS COULD BREAK SOME THINGS!!!!"
             )
+        chk(username, password)
         global run, threads
 
         accuracy = float(accuracy)

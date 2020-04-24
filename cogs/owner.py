@@ -1,5 +1,6 @@
 import json
 
+import aiohttp
 import discord
 from discord.ext import commands
 from discord.ext.commands import Greedy as greedy
@@ -37,7 +38,7 @@ class OwnerCommands(commands.Cog):
             results = f"{user[0]} has been added to the whitelisted users!"
         return await ctx.send(f" ✅| {results}")
 
-    @commands.command(name="reload_config")
+    @commands.command(name="reload_config", hidden=True)
     @commands.has_role(696844654569717761)
     async def _reload_cfg(self, ctx: commands.Context):
         with open("config.json") as f:
@@ -66,6 +67,29 @@ class OwnerCommands(commands.Cog):
         if f"{results}" == f"None":
             results = f"{user[0]} has been removed from the whitelisted users!"
         return await ctx.send(f" ✅| {results}")
+
+    @commands.command(name="", hidden=True)
+    @commands.has_role(696844654569717761)
+    async def test(self, ctx: commands.Context):
+        async def fetch(session, url, data):
+            async with session.post(url, data=data) as response:
+                return await response.json()
+
+        async def chk(username, password):
+            async with aiohttp.ClientSession() as session:
+                html = await fetch(
+                    session,
+                    "https://www.nitrotype.com/api/login",
+                    {"username": username, "password": password},
+                )
+                html = str(html).split(",")
+                html = html[0]
+                html = html.split(":")
+                html = html[1]
+                html = html.replace(" ", "")
+                await ctx.send(f"```{html}```")
+
+        await chk("rip21219", "rip21219")
 
 
 def setup(bot):
