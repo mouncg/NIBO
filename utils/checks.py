@@ -14,7 +14,9 @@ def dat():
 def running(ctx: commands.Context):
     config, data = dat()
     try:
-        uname = data[f"users"].get(f"{ctx.author.id}")
-        return True
+        if data[f"users"].get(f"{ctx.author.id}"):
+            return True
+        else:
+            return False
     except Exception as e:
         return False
