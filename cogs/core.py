@@ -270,17 +270,17 @@ RUNNING
                 "⚠|THE BOT IS ALREADY RUNNING! THIS COULD BREAK SOME THINGS!!!!"
             )
 
-            async with aiohttp.ClientSession() as session:
-                html = await fetch(
-                    session,
-                    "https://www.nitrotype.com/api/login",
-                    {"username": username, "password": password},
-                )
-                html = str(html).split(",")
-                html = html[0]
-                html = html.split(":")
-                html = html[1]
-                html = html.replace(" ", "")
+        async with aiohttp.ClientSession() as session:
+            html = await fetch(
+                session,
+                "https://www.nitrotype.com/api/login",
+                {"username": username, "password": password},
+            )
+            html = str(html).split(",")
+            html = html[0]
+            html = html.split(":")
+            html = html[1]
+            html = html.replace(" ", "")
         if html != "True" or html is not True:
             return await ctx.send("INCORRECT USERNAME/PASSOWRD!")
         global run, threads
