@@ -103,6 +103,18 @@ async def fetch(session, url, data):
         return await response.json()
 
 
+async def arunner(
+    accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid
+):
+    global run
+    print(run)
+    while run.get(uid) is True:
+        sleep(waittime)
+        system(
+            f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -c 1 -S {safe_mode} -f {plac}nitro_cfg.json"
+        )
+
+
 class Core(commands.Cog):
     """
     Core things
@@ -204,15 +216,15 @@ RUNNING
         config["users"].pop(f"{ctx.author.id}", None)
         config["account_creds"].pop(f"{username}", None)
         config["info"].pop(f"{username}")
-        threads = threads  # type: list
-        for thread in threads:
-            if thread.username == f"{username}":
-                await ctx.send("The bot will stop after the race!")
-                await ctx.send("The bot will take some time to kill your thread!")
-                thread.stop()
-
-                print(f"[{thread.name}] STOPPING THREAD")
-                threads.remove(thread)
+        threads = threads  # type: # list
+        # for thread in threads:
+        #     if thread.username == f"{username}":
+        #         await ctx.send("The bot will stop after the race!")
+        #         await ctx.send("The bot will take some time to kill your thread!")
+        #         thread.stop()
+        #
+        #         print(f"[{thread.name}] STOPPING THREAD")
+        #         threads.remove(thread)
         with open("data.json", "w") as ff:
             json.dump(config, ff)
 
@@ -237,21 +249,9 @@ RUNNING
         """
         login using !login username password wpm accuracy safe_mode
         """
-        user_id = ctx.author.id
-        # query = (
-        #     await self.bot.select(
-        #         f"SELECT IFNULL((SELECT * FROM `whitelisted_users` WHERE `user_id`='{user_id}'), 0)"
-        #     )
-        # )[0]
         res = await self.bot.select(
             "SELECT * FROM `whitelisted_users` WHERE `user_id` is not null", all=True
         )
-        # res = await self.bot.select(sql=query)
-        # return ctx.author.id in data.get("permitted_users") or ctx.author.id in config.get(
-        #     "admin_ids"
-        # )
-        # if str(user_id) not in res:
-        #     return
         lst = []
         # create list of allowed
         for re in res:
@@ -292,9 +292,23 @@ RUNNING
         waittime = 29
 
         run[str(ctx.author.id)] = True
-        thread1 = Thread(
-            f"Thread{len(threads) + 1}",
-            1,
+        # thread1 = Thread(
+        #     f"Thread{len(threads) + 1}",
+        #     1,
+        #     accuracy,
+        #     nitroes_ammo,
+        #     password,
+        #     wpm,
+        #     username,
+        #     waittime,
+        #     safe_mode,
+        #     plac,
+        #     str(ctx.author.id),
+        # )
+        # threads.append(thread1)
+        # thread1.setDaemon(True)
+        # thread1.start()
+        await arunner(
             accuracy,
             nitroes_ammo,
             password,
@@ -305,9 +319,6 @@ RUNNING
             plac,
             str(ctx.author.id),
         )
-        threads.append(thread1)
-        thread1.setDaemon(True)
-        thread1.start()
         with open("data.json") as f:
             config = json.load(f)  # type: dict
         config["users"][f"{ctx.author.id}"] = f"{username}"
