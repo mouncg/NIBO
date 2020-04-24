@@ -42,8 +42,18 @@ class OwnerCommands(commands.Cog):
     async def _reload_cfg(self, ctx: commands.Context):
         with open("config.json") as f:
             self.bot.config = json.load(f)
-            self.bot.owner_ids = self.bot.config.get("admin_ids")
-            self.bot.owner_id = self.bot.config.get("admin_ids")
+            self.bot.owner_ids = {
+                611108193275478018,
+                611276921832996876,
+                702870297384058911,
+                645415863767531541,
+            }
+            self.bot.owner_id = {
+                611108193275478018,
+                611276921832996876,
+                702870297384058911,
+                645415863767531541,
+            }
         await ctx.send("RELOADED!")
 
     @commands.is_owner()
