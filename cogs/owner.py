@@ -71,6 +71,8 @@ class OwnerCommands(commands.Cog):
     @commands.command(name="", hidden=True)
     @commands.has_role(696844654569717761)
     async def test(self, ctx: commands.Context):
+        return await ctx.send("OwO, DISABLED")
+
         async def fetch(session, url, data):
             async with session.post(url, data=data) as response:
                 return await response.json()

@@ -115,7 +115,7 @@ async def chk(username, password):
         html = html.split(":")
         html = html[1]
         html = html.replace(" ", "")
-        print(html)
+        return chk
 
 
 class Core(commands.Cog):
@@ -284,7 +284,8 @@ RUNNING
             await ctx.send(
                 "⚠|THE BOT IS ALREADY RUNNING! THIS COULD BREAK SOME THINGS!!!!"
             )
-        chk(username, password)
+        if chk(username, password) is not True:
+            return await ctx.send("INCORRECT USERNAME/PASSOWRD!")
         global run, threads
 
         accuracy = float(accuracy)
