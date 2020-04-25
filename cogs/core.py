@@ -243,6 +243,50 @@ RUNNING
         global run
         await ctx.send(f"```py\n{run}\n```")
 
+    @commands.command(name="SP")
+    @commands.has_role(696844654569717761)
+    async def _sp(self, ctx: commands.Context):
+        global run
+        with open("spd.txt", "w") as f:
+            f.write(str(run))
+        await ctx.send("SAVED!")
+
+    @commands.command(name="LD")
+    @commands.has_role(696844654569717761)
+    async def _ld(self, ctx: commands.Context):
+        global run, threads
+        with open("spd.txt") as f:
+            r = dict(f.readline())
+            run = r
+        for username, running in run:
+            if running:
+                await ctx.send(f"STARTING {username}")
+                dat = data()
+                uname = dat["users"].get(username)
+                password = dat["account_creds"].get(uname)
+                accuracy = dat["info"][uname].get("accuracy")
+                safe_mode = dat["info"][uname].get("safe_mode")
+                wpm = dat["info"][uname].get("wpm")
+                nitroes_ammo = 1
+                waittime = 29
+                plac = "/home/epfforce/Programming/python/"
+                thread1 = Thread(
+                    f"Thread{len(threads) + 1}",
+                    1,
+                    accuracy,
+                    nitroes_ammo,
+                    password,
+                    wpm,
+                    uname,
+                    waittime,
+                    safe_mode,
+                    plac,
+                    str(ctx.author.id),
+                )
+                threads.append(thread1)
+                thread1.setDaemon(True)
+                thread1.start()
+
     @commands.command(name=f"login")
     async def _login(
         self,
@@ -254,7 +298,8 @@ RUNNING
     ):
         if username or password or wpm or accuracy is None:
             return await ctx.send(
-                f"THE USAGE FOR THIS COMMAND IS `!login <username> <password> <wpm> <accuracy>`, please use this without the `<>` part!"
+                f"THE USAGE FOR THIS COMMAND IS `!login <username> <password> <wpm> <accuracy>`, please use this "
+                f"without the `<>` part! "
             )
         safe_mode = True
         """
