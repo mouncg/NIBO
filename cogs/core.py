@@ -260,8 +260,8 @@ RUNNING
         config = cfg()
         for role in cmbr.roles:
             role = role  # type: discord.Role
-            await ctx.send(role.id)
-            await ctx.send(f'{str(role.id)} | {str(config.get("runner_role_id"))}')
+            # await ctx.send(role.id)
+            # await ctx.send(f'{str(role.id)} | {str(config.get("runner_role_id"))}')
             if str(role.id) != str(config.get("runner_role_id")):
                 if lng1 == lng - 1:
                     e = discord.Embed(
