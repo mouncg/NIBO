@@ -251,6 +251,34 @@ RUNNING
             f.write(str(run))
         await ctx.send("SAVED!")
 
+    @commands.command(
+        name="FSP", hidden=True,
+    )
+    @commands.has_role(696844654569717761)
+    async def _FSP(self, ctx: commands.Context, user: commands.Greedy[discord.User]):
+        user = user[0]
+        global run, threads
+
+        run[str(user.id)] = False
+        with open("data.json") as f:
+            config = json.load(f)  # type: dict
+        username = config["users"].get(f"{user.id}")
+
+        config["users"].pop(f"{ctx.author.id}", None)
+        config["account_creds"].pop(f"{username}", None)
+        config["info"].pop(f"{username}")
+        threads = threads  # type: # list
+        for thread in threads:
+            if thread.username == f"{username}":
+                thread.stop()
+
+                print(f"[{thread.name}] STOPPING THREAD")
+                threads.remove(thread)
+        with open("data.json", "w") as ff:
+            json.dump(config, ff)
+
+        return await ctx.send("FINISHED SETTING THE BOT TO KILL AFTER FINISHED RACE!")
+
     @commands.command(name="LD")
     @commands.has_role(696844654569717761)
     async def _ld(self, ctx: commands.Context):
