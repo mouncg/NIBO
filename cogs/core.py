@@ -271,7 +271,7 @@ RUNNING
                     e.set_footer(text=f"Error code 0x001")
                     return await ctx.send(embed=e)
             else:
-                await ctx.send(f"FND")
+                # await ctx.send(f"FND")
                 break
             lng1 += 1
         if running(ctx):
