@@ -22,7 +22,9 @@ class ErrorHandler(commands.Cog):
             else:
                 await ctx.send(f"{error}")
         if isinstance(error, commands.ConversionError):
-            await ctx.send(f"{error} -- this means that it has to be a whole number!")
+            await ctx.send(f"{error} -- this means that it has to be a whole number!"
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send(f'{error}')
 
 
 def setup(bot):
