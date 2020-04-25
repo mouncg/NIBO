@@ -249,22 +249,22 @@ RUNNING
         """
         login using !login username password wpm accuracy safe_mode
         """
-        res = await self.bot.select(
-            "SELECT * FROM `whitelisted_users` WHERE `user_id` is not null", all=True
-        )
-        lst = []
-        # create list of allowed
-        for re in res:
-            lst.append(re[0])
-        print([str(ctx.author.id)])
-        if str(ctx.author.id) not in lst:
-            e = discord.Embed(
-                color=0x64FF00,
-                title=f"You do not have the permissions to run this command!",
-            )
-            e.set_footer(text=f"Error code 0x001")
-            await ctx.send(embed=e)
-            return
+        uid = ctx.author.id
+        guild = self.bot.get_guild(695056476754018394)  # type: discord.Guild
+        cmbr = guild.get_member(uid)  # type: discord.Member
+        lng = len(cmbr.roles)
+        lng1 = 0
+        for role in cmbr.roles:
+            role = role  # type: discord.Role
+            if role.id != self.bot.config["runner_role_id"]:
+                if lng1 - 1 == lng:
+                    e = discord.Embed(
+                        color=0x64FF00,
+                        title=f"You do not have the permissions to run this command!",
+                    )
+                    e.set_footer(text=f"Error code 0x001")
+                    return await ctx.send(embed=e)
+            lng1 += 1
         if running(ctx):
             await ctx.send(
                 "⚠|THE BOT IS ALREADY RUNNING! THIS COULD BREAK SOME THINGS!!!!"
