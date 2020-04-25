@@ -260,7 +260,7 @@ RUNNING
         config = cfg()
         for role in cmbr.roles:
             role = role  # type: discord.Role
-            if role.id != config["runner_role_id"]:
+            if role.id is not config["runner_role_id"]:
                 if lng1 == lng - 1:
                     e = discord.Embed(
                         color=0x64FF00,
