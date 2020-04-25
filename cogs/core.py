@@ -256,8 +256,11 @@ RUNNING
     async def _ld(self, ctx: commands.Context):
         global run, threads
         with open("spd.txt") as f:
+
             r = dict(f.readline())
+            print(r)
             run = r
+
         for username, running in run:
             if running:
                 await ctx.send(f"STARTING {username}")
