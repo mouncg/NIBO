@@ -9,6 +9,7 @@ import json
 from os import system
 from main import NitroBot
 from utils.checks import running
+import ast
 
 
 def data():
@@ -257,6 +258,7 @@ RUNNING
         global run, threads
         with open("spd.txt") as f:
             json_acceptable_string = f.readline().replace("'", '"')
+            print(f.readline())
             r = json.loads(json_acceptable_string)
             print(r)
             run = r
