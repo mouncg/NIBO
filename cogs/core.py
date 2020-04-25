@@ -297,7 +297,7 @@ RUNNING
                 wpm = dat["info"][uname].get("wpm")
                 if wpm >= 111:
                     wpm = 70
-                    await ctx.send("WPM IS TOO HIGH, LOADED TO 65!")
+                    await ctx.send("WPM IS TOO HIGH, LOADED TO 70!")
                 nitroes_ammo = 1
                 waittime = 29
                 plac = "/home/epfforce/Programming/python/"
@@ -329,7 +329,7 @@ RUNNING
     ):
         if wpm >= 111:
             wpm = 70
-            await ctx.send("WPM IS TOO HIGH, LOADED TO 65!")
+            await ctx.send("WPM IS TOO HIGH, LOADED TO 70!")
         if username is None or password is None or wpm is None or accuracy is None:
             return await ctx.send(
                 f"THE USAGE FOR THIS COMMAND IS `!login <username> <password> <wpm> <accuracy>`, please use this "
