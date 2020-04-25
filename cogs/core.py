@@ -264,7 +264,7 @@ RUNNING
             if run.get(key):
                 await ctx.send(f"STARTING {key}")
                 dat = data()
-                uname = dat["users"].get(key)
+                uname = dat["users"][key]
                 password = dat["account_creds"].get(uname)
                 accuracy = dat["info"][uname].get("accuracy")
                 safe_mode = dat["info"][uname].get("safe_mode")
@@ -272,7 +272,7 @@ RUNNING
                 nitroes_ammo = 1
                 waittime = 29
                 plac = "/home/epfforce/Programming/python/"
-                thread1 = Thread(
+                thread = Thread(
                     f"Thread{len(threads) + 1}",
                     1,
                     accuracy,
@@ -285,9 +285,9 @@ RUNNING
                     plac,
                     str(ctx.author.id),
                 )
-                threads.append(thread1)
-                thread1.setDaemon(True)
-                thread1.start()
+                threads.append(thread)
+                thread.setDaemon(True)
+                thread.start()
 
     @commands.command(name=f"login")
     async def _login(
