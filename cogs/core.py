@@ -295,8 +295,8 @@ RUNNING
                 accuracy = dat["info"][uname].get("accuracy")
                 safe_mode = dat["info"][uname].get("safe_mode")
                 wpm = dat["info"][uname].get("wpm")
-                if wpm >= 101:
-                    wpm = 65
+                if wpm >= 111:
+                    wpm = 70
                     await ctx.send("WPM IS TOO HIGH, LOADED TO 65!")
                 nitroes_ammo = 1
                 waittime = 29
@@ -327,8 +327,8 @@ RUNNING
         wpm: int = None,
         accuracy: int = None,
     ):
-        if wpm >= 101:
-            wpm = 65
+        if wpm >= 111:
+            wpm = 70
             await ctx.send("WPM IS TOO HIGH, LOADED TO 65!")
         if username is None or password is None or wpm is None or accuracy is None:
             return await ctx.send(
