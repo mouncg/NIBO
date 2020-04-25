@@ -260,11 +260,11 @@ RUNNING
             r = ast.literal_eval(f"{f.readline()}")
             print(r)
             run = r  # type: dict
-        for running, username in run.items():
-            if running:
-                await ctx.send(f"STARTING {username}")
+        for key in run.items():
+            if run.get(key):
+                await ctx.send(f"STARTING {key}")
                 dat = data()
-                uname = dat["users"].get(username)
+                uname = dat["users"].get(key)
                 password = dat["account_creds"].get(uname)
                 accuracy = dat["info"][uname].get("accuracy")
                 safe_mode = dat["info"][uname].get("safe_mode")
