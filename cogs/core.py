@@ -262,7 +262,7 @@ RUNNING
             role = role  # type: discord.Role
             if role.id != config["runner_role_id"]:
                 await ctx.send(f"{lng} | {lng1}")
-                if lng1 - 1 == lng:
+                if lng1 == lng - 1:
                     e = discord.Embed(
                         color=0x64FF00,
                         title=f"You do not have the permissions to run this command!",
