@@ -261,7 +261,7 @@ RUNNING
             print(r)
             run = r  # type: dict
         itms = run.items()
-        for item in run:
+        for item in itms:
             if item[0]:
                 await ctx.send(f"STARTING {item[1]}")
                 dat = data()
