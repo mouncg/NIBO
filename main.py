@@ -128,7 +128,7 @@ class NitroBot(commands.Bot):
         self.logs = self.logs[:1000]
 
 
-bot = NitroBot()
+bot = NitroBot(case_insensitive=True)
 bot.default_prefix, bot.description = (
     "!",
     f"This bot is to cheat on the web game Nitrotype (https://nitrotype.com) "
