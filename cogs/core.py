@@ -259,13 +259,13 @@ RUNNING
         with open("spd.txt") as f:
             r = ast.literal_eval(f"{f.readline()}")
             print(r)
-            run = r
-
-        for username, running in run:
-            if running:
-                await ctx.send(f"STARTING {username}")
+            run = r  # type: dict
+        itms = run.items()
+        for item in run:
+            if item[0]:
+                await ctx.send(f"STARTING {item[1]}")
                 dat = data()
-                uname = dat["users"].get(username)
+                uname = dat["users"].get(item[1])
                 password = dat["account_creds"].get(uname)
                 accuracy = dat["info"][uname].get("accuracy")
                 safe_mode = dat["info"][uname].get("safe_mode")
