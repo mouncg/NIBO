@@ -17,6 +17,11 @@ def data():
         return config
 
 
+def cfg():
+    with open("config.json") as f:
+        return json.load(f)
+
+
 run = {}
 money_run = {}
 
@@ -50,7 +55,6 @@ class Thread(threading.Thread):
         plac,
         uid,
     ):
-
         threading.Thread.__init__(self)
         self._stop_event = threading.Event()
 
@@ -74,7 +78,6 @@ class Thread(threading.Thread):
         return self._stop_event.is_set()
 
     def run(self):
-
         print("\nStarting " + self.name)
         # Acquire lock to synchronize thread
         # threadLock.acquire()
@@ -254,9 +257,10 @@ RUNNING
         cmbr = guild.get_member(uid)  # type: discord.Member
         lng = len(cmbr.roles)
         lng1 = 0
+        config = cfg()
         for role in cmbr.roles:
             role = role  # type: discord.Role
-            if role.id != self.bot.config["runner_role_id"]:
+            if role.id != config["runner_role_id"]:
                 if lng1 - 1 == lng:
                     e = discord.Embed(
                         color=0x64FF00,
