@@ -243,11 +243,15 @@ RUNNING
     async def _login(
         self,
         ctx: commands.Context,
-        username: str,
-        password: str,
-        wpm: int,
-        accuracy: int,
+        username: str = None,
+        password: str = None,
+        wpm: int = None,
+        accuracy: int = None,
     ):
+        if username or password or wpm or accuracy is None:
+            return await ctx.send(
+                f"THE USAGE FOR THIS COMMAND IS `!login <username> <password> <wpm> <accuracy>`"
+            )
         safe_mode = True
         """
         login using !login username password wpm accuracy safe_mode
