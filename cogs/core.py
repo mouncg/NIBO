@@ -261,7 +261,7 @@ RUNNING
             print(r)
             run = r  # type: dict
         for key in run.items():
-            if run.get(key):
+            if run[key] is True:
                 await ctx.send(f"STARTING {key}")
                 dat = data()
                 uname = dat["users"][key]
