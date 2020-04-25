@@ -31,13 +31,17 @@ loop = asyncio.get_event_loop()
 def runner(
     accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid
 ):
+    TCN = 0
     global run
     print(run)
     while run.get(uid) is True:
+        if TCN % 500 == 0:
+            sleep(60 * 30)
         sleep(waittime)
         system(
             f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -c 1 -S {safe_mode} -f {plac}nitro_cfg.json"
         )
+        TCN += 1
 
 
 class Thread(threading.Thread):
