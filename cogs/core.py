@@ -32,9 +32,8 @@ loop = asyncio.get_event_loop()
 def runner(
     accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid
 ):
-    TCN = 0
+    TCN = 1
     global run
-    print(run)
     while run.get(uid) is True:
         if TCN % 500 == 0:
             sleep(60 * 30)
