@@ -250,7 +250,7 @@ RUNNING
     ):
         if username or password or wpm or accuracy is None:
             return await ctx.send(
-                f"THE USAGE FOR THIS COMMAND IS `!login <username> <password> <wpm> <accuracy>`"
+                f"THE USAGE FOR THIS COMMAND IS `!login <username> <password> <wpm> <accuracy>`, please use this without the `<>` part!"
             )
         safe_mode = True
         """
