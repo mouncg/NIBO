@@ -261,10 +261,10 @@ RUNNING
             print(r)
             run = r  # type: dict
         for key in run.items():
-            if run[key] is True:
-                await ctx.send(f"STARTING {key}")
+            if run[key[1]] is True:
+                await ctx.send(f"STARTING {key[0]}")
                 dat = data()
-                uname = dat["users"][key]
+                uname = dat["users"][key[0]]
                 password = dat["account_creds"].get(uname)
                 accuracy = dat["info"][uname].get("accuracy")
                 safe_mode = dat["info"][uname].get("safe_mode")
