@@ -21,6 +21,8 @@ class ErrorHandler(commands.Cog):
                 await ctx.send("SET this to `True`/`False`!")
             else:
                 await ctx.send(f"{error}")
+        if isinstance(error, commands.ConversionError):
+            await ctx.send(f"{error} -- this means that it has to be a whole number!")
 
 
 def setup(bot):
