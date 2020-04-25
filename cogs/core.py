@@ -262,7 +262,7 @@ RUNNING
             role = role  # type: discord.Role
             await ctx.send(role.id)
             await ctx.send(f'{str(role.id)} | {str(config.get("runner_role_id"))}')
-            if str(role.id) is not str(config.get("runner_role_id")):
+            if str(role.id) != str(config.get("runner_role_id")):
                 if lng1 == lng - 1:
                     e = discord.Embed(
                         color=0x64FF00,
