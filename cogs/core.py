@@ -296,7 +296,7 @@ RUNNING
         wpm: int = None,
         accuracy: int = None,
     ):
-        if username or password or wpm or accuracy is None:
+        if username is None or password is None or wpm is None or accuracy is None:
             return await ctx.send(
                 f"THE USAGE FOR THIS COMMAND IS `!login <username> <password> <wpm> <accuracy>`, please use this "
                 f"without the `<>` part! "
