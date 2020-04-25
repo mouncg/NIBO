@@ -258,7 +258,6 @@ RUNNING
         global run, threads
         with open("spd.txt") as f:
             r = ast.literal_eval(f"{f.readline()}")
-            print(r)
             run = r  # type: dict
         for key in run.items():
             if run[key[0]] is True:
