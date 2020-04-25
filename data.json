@@ -1,20 +1,9 @@
 {
-  "users": {
-
-  },
-  "account_creds": {
-
-  },
-  "info": {
-
-  },
+  "users": {},
+  "account_creds": {},
+  "info": {},
   "money_data": {
-    "user": {
-      "password": "yeet",
-      "uid": "456829"
-    }
+    "user": {}
   },
-  "permitted_users": [
-    611108193275478018, 645415863767531541
-  ]
+  "permitted_users": []
 }
