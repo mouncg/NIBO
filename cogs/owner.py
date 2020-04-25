@@ -11,6 +11,8 @@ import aiomysql
 class OwnerCommands(commands.Cog):
     def __init__(self, bot: NitroBot):
         self.bot = bot
+        with open("config.json") as f:
+            self.config = json.load(f)
 
     @commands.command(name="load", hidden=True)
     @commands.has_role(696844654569717761)
@@ -20,55 +22,21 @@ class OwnerCommands(commands.Cog):
             await ctx.send(f"reloaded {i}")
         await ctx.send(f"loaded {exts}")
 
-    # @commands.has_role(696844654569717761)
-    # @commands.command(name="add_user", hidden=True)
-    # async def add_user(self, ctx: commands.Context, user: greedy[discord.User]):
-    #     async with self.bot.pool.acquire() as conn:
-    #         async with conn.cursor() as cur:
-    #             await cur.execute(
-    #                 # f"insert into whitelisted_users values (`{user[0].id}`)"
-    #                 "REPLACE INTO `whitelisted_users`(`user_id`) VALUES ('{}');".format(
-    #                     user[0].id
-    #                 )
-    #             )
-    #             await conn.commit()
-    #             conn.close()
-    #             results = await cur.fetchone()
-    #     if f"{results}" == f"None":
-    #         results = f"{user[0]} has been added to the whitelisted users!"
-    #     return await ctx.send(f" ✅| {results}")
-    #
-    # @commands.command(name="reload_config", hidden=True)
-    # @commands.has_role(696844654569717761)
-    # async def _reload_cfg(self, ctx: commands.Context):
-    #     with open("config.json") as f:
-    #         self.bot.config = json.load(f)
-    #         self.bot.owner_ids = {
-    #             611108193275478018,
-    #             611276921832996876,
-    #             702870297384058911,
-    #             645415863767531541,
-    #         }
-    #     await ctx.send("RELOADED!")
-    #
-    # @commands.has_role(696844654569717761)
-    # @commands.command(name="del_user", hidden=True)
-    # async def del_user(self, ctx: commands.Context, user: greedy[discord.User]):
-    #     async with self.bot.pool.acquire() as conn:
-    #         async with conn.cursor() as cur:
-    #             await cur.execute(
-    #                 "delete from whitelisted_users where user_id = {}".format(
-    #                     user[0].id
-    #                 )
-    #             )
-    #             await conn.commit()
-    #             conn.close()
-    #             results = await cur.fetchone()
-    #     if f"{results}" == f"None":
-    #         results = f"{user[0]} has been removed from the whitelisted users!"
-    #     return await ctx.send(f" ✅| {results}")
+    @commands.command(
+        name="MRA",
+        aliases=["massroleadd", "mass_role_add", "mass-role-add"],
+        hidden=True,
+    )
+    @commands.has_role(696844654569717761)
+    async def _MRA(self, ctx: commands.Context):
+        for member in ctx.guild.members:
+            member = member  # type: discord.Member
+            g = ctx.guild  # type: discord.Guild
+            crm = self.config.get("runner_role_id")
 
-    @commands.command(name="", hidden=True)
+            await member.add_roles(g.get_role(crm), reason="MRA")
+
+    @commands.command(name="test", hidden=True)
     @commands.has_role(696844654569717761)
     async def test(self, ctx: commands.Context):
         return await ctx.send("OwO, DISABLED")
