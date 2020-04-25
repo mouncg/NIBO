@@ -257,9 +257,7 @@ RUNNING
     async def _ld(self, ctx: commands.Context):
         global run, threads
         with open("spd.txt") as f:
-            json_acceptable_string = f.readline().replace("'", '"')
-            print(f.readline())
-            r = json.loads(json_acceptable_string)
+            r = ast.literal_eval(f"{f.readline()}")
             print(r)
             run = r
 
