@@ -261,6 +261,7 @@ RUNNING
         for role in cmbr.roles:
             role = role  # type: discord.Role
             if role.id != config["runner_role_id"]:
+                await ctx.send(f"{lng} | {lng1}")
                 if lng1 - 1 == lng:
                     e = discord.Embed(
                         color=0x64FF00,
