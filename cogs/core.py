@@ -10,6 +10,7 @@ from os import system
 from main import NitroBot
 from utils.checks import running
 import ast
+import random
 
 
 def data():
@@ -32,6 +33,7 @@ loop = asyncio.get_event_loop()
 def runner(
     accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid
 ):
+    waittime = random.randint(5, waittime)
     TCN = 1
     global run
     while run.get(uid) is True:
