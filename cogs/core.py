@@ -261,13 +261,14 @@ class Core(commands.Cog):
     @commands.command(name="LD")
     @commands.has_role(696844654569717761)
     async def _ld(self, ctx: commands.Context):
-        global run, threads
+        global run, threads, ldw
+        ldw = False
         with open("spd.txt") as f:
             r = ast.literal_eval(f"{f.readline()}")
             run = r  # type: dict
-        for key in run.items():
+        for key in r.items():
             try:
-                if run[key[0]] is True:
+                if r[key[0]] is True:
                     await ctx.send(f"STARTING {key[0]}")
                     dat = data()
                     uname = dat["users"][key[0]]
@@ -302,11 +303,13 @@ class Core(commands.Cog):
                     thread.start()
             except Exception as e:
                 await self.bot.get_channel(704291784565456906).send(f"{e}")
-                run[key[0]] = False
+                r[key[0]] = False
                 pass
         with open("spd.txt", "w") as f:
             f.write(str(run))
+        ldw = True
 
+    @commands.dm_only()
     @commands.command(name=f"login")
     async def _login(
         self,
@@ -336,7 +339,7 @@ class Core(commands.Cog):
             wpm = 70
             await ctx.send("WPM IS TOO HIGH, LOADED TO 70!")
         if wpm > 40:
-            wpm -= 40
+            wpm -= 20
         if 40 > wpm > 5:
             wpm -= 5
         safe_mode = True
