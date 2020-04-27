@@ -184,7 +184,11 @@ class Core(commands.Cog):
     @commands.command(name="stop")
     @commands.check(running)
     async def _stop(self, ctx: commands.Context):
-        global run, threads
+        global run, threads, ldw
+        if ldw is False:
+            return await ctx.send(
+                "WE ARE CURRENTLY DISABLING THE SERVICE FOR MAINTENANCE, TRY AGAIN LATER!"
+            )
 
         run[str(ctx.author.id)] = False
         with open("data.json") as f:
@@ -328,7 +332,7 @@ class Core(commands.Cog):
         global ldw
         if ldw is False:
             return await ctx.send(
-                "WE ARE CURRENTLY DISABLING THE SERVICE, TRY AGAIN LATER!"
+                "WE ARE CURRENTLY DISABLING THE SERVICE FOR MAINTENANCE, TRY AGAIN LATER!"
             )
 
         if (
