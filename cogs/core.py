@@ -208,7 +208,10 @@ class Core(commands.Cog):
     @commands.has_role(696844654569717761)
     async def _list(self, ctx: commands.Context):
         global run
-        await ctx.send(f"```py\n{run}\n```")
+        with open("spd.txt", "w") as f:
+            f.write(str(run))
+        file = discord.File("spd.txt", filename="running_users.json")
+        await ctx.send(file=file)
 
     @commands.command(name="SP")
     @commands.has_role(696844654569717761)

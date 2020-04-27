@@ -10,21 +10,26 @@ class ErrorHandler(commands.Cog):
     async def on_command_error(
         self, ctx: commands.Context, error: commands.CommandError
     ):
+        """
+        this just handles the errors!
+        :param ctx:
+        :param error:
+        :return:
+        """
         if f"{error}".startswith('Command "!'):
             return
         print(f"{error}")
         await ctx.message.add_reaction("❌")
         await self.bot.get_channel(702987609575522330).send(f"{error}")
 
-        await ctx.send(f"{error}")
         if isinstance(error, commands.MissingRequiredArgument):
             if f"{error}" == f"safe_mode is a required argument that is missing.":
                 await ctx.send("SET this to `True`/`False`!")
             else:
                 await ctx.send(f"{error}")
-        if isinstance(error, commands.ConversionError):
+        elif isinstance(error, commands.ConversionError):
             await ctx.send(f"{error} -- this means that it has to be a whole number!")
-        if isinstance(error, commands.CheckFailure):
+        else:
             await ctx.send(f"{error}")
 
 
