@@ -325,6 +325,7 @@ RUNNING
                     thread.start()
             except Exception as e:
                 await self.bot.get_channel(704291784565456906).send(f"{e}")
+                run[key[0]] = False
                 pass
 
     @commands.command(name=f"login")
