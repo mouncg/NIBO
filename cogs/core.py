@@ -339,17 +339,20 @@ RUNNING
         wpm: int = None,
         accuracy: int = None,
     ):
+
+        if (
+            username is None or password is None or wpm is None or accuracy is None
+        ):  # KEEP AT FRONT OF THE CODE
+            return await ctx.send(
+                f"THE USAGE FOR THIS COMMAND IS `!login <username> <password> <wpm> <accuracy>`, please use this "
+                f"without the `<>` part! "
+            )
         if accuracy >= 95:
             accuracy = 80
             await ctx.send("ACCURACY IS TOO HIGH, CHANGED TO 80!")
         if wpm >= 111:
             wpm = 70
             await ctx.send("WPM IS TOO HIGH, LOADED TO 70!")
-        if username is None or password is None or wpm is None or accuracy is None:
-            return await ctx.send(
-                f"THE USAGE FOR THIS COMMAND IS `!login <username> <password> <wpm> <accuracy>`, please use this "
-                f"without the `<>` part! "
-            )
         if wpm > 40:
             wpm -= 40
         if 40 > wpm > 5:
