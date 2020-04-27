@@ -327,6 +327,8 @@ RUNNING
                 await self.bot.get_channel(704291784565456906).send(f"{e}")
                 run[key[0]] = False
                 pass
+        with open("spd.txt", "w") as f:
+            f.write(str(run))
 
     @commands.command(name=f"login")
     async def _login(
