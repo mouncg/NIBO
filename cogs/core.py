@@ -289,39 +289,43 @@ RUNNING
             r = ast.literal_eval(f"{f.readline()}")
             run = r  # type: dict
         for key in run.items():
-            if run[key[0]] is True:
-                await ctx.send(f"STARTING {key[0]}")
-                dat = data()
-                uname = dat["users"][key[0]]
-                password = dat["account_creds"].get(uname)
-                accuracy = dat["info"][uname].get("accuracy")
-                safe_mode = dat["info"][uname].get("safe_mode")
-                wpm = dat["info"][uname].get("wpm")
-                if accuracy >= 95:
-                    accuracy = 80
-                    await ctx.send("ACCURACY IS TOO HIGH, CHANGED TO 80!")
-                if wpm >= 111:
-                    wpm = 70
-                    await ctx.send("WPM IS TOO HIGH, LOADED TO 70!")
-                nitroes_ammo = 1
-                waittime = 29
-                plac = "/home/epfforce/Programming/python/"
-                thread = Thread(
-                    f"Thread{len(threads) + 1}",
-                    1,
-                    accuracy,
-                    nitroes_ammo,
-                    password,
-                    wpm,
-                    uname,
-                    waittime,
-                    safe_mode,
-                    plac,
-                    str(ctx.author.id),
-                )
-                threads.append(thread)
-                thread.setDaemon(True)
-                thread.start()
+            try:
+                if run[key[0]] is True:
+                    await ctx.send(f"STARTING {key[0]}")
+                    dat = data()
+                    uname = dat["users"][key[0]]
+                    password = dat["account_creds"].get(uname)
+                    accuracy = dat["info"][uname].get("accuracy")
+                    safe_mode = dat["info"][uname].get("safe_mode")
+                    wpm = dat["info"][uname].get("wpm")
+                    if accuracy >= 95:
+                        accuracy = 80
+                        await ctx.send("ACCURACY IS TOO HIGH, CHANGED TO 80!")
+                    if wpm >= 111:
+                        wpm = 70
+                        await ctx.send("WPM IS TOO HIGH, LOADED TO 70!")
+                    nitroes_ammo = 1
+                    waittime = 29
+                    plac = "/home/epfforce/Programming/python/"
+                    thread = Thread(
+                        f"Thread{len(threads) + 1}",
+                        1,
+                        accuracy,
+                        nitroes_ammo,
+                        password,
+                        wpm,
+                        uname,
+                        waittime,
+                        safe_mode,
+                        plac,
+                        str(ctx.author.id),
+                    )
+                    threads.append(thread)
+                    thread.setDaemon(True)
+                    thread.start()
+            except Exception as e:
+                await self.bot.get_channel(704291784565456906).send(f"{e}")
+                pass
 
     @commands.command(name=f"login")
     async def _login(
