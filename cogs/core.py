@@ -29,6 +29,8 @@ money_run = {}
 
 loop = asyncio.get_event_loop()
 
+ldw = False
+
 
 def runner(
     accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid
@@ -244,6 +246,18 @@ class Core(commands.Cog):
 
         return await ctx.send("FINISHED SETTING THE BOT TO KILL AFTER FINISHED RACE!")
 
+    @commands.command(name="ldw")
+    @commands.has_role(696844654569717761)
+    async def _ldw(self, ctx: commands.Context):
+        global ldw
+        if ldw:
+            ldw = False
+            m = "BLOCKED LOGGING IN!"
+        else:
+            ldw = True
+            m = "ENABLED LOGGING IN!"
+        return await ctx.send(m)
+
     @commands.command(name="LD")
     @commands.has_role(696844654569717761)
     async def _ld(self, ctx: commands.Context):
@@ -302,6 +316,11 @@ class Core(commands.Cog):
         wpm: int = None,
         accuracy: int = None,
     ):
+        global ldw
+        if ldw is False:
+            return await ctx.send(
+                "WE ARE CURRENTLY DISABLING THE SERVICE, TRY AGAIN LATER!"
+            )
 
         if (
             username is None or password is None or wpm is None or accuracy is None
