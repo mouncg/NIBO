@@ -360,11 +360,12 @@ RUNNING
         safe_mode = True
         with open("data.json") as f:
             c = json.load(f)  # type: dict
-        if c["users"][f"{ctx.author.id}"] == f"{username}":
-            return await ctx.send(
-                f"THE BOT IS ALREADY RUNNING ON THIS ACCOUNT! PLEASE DO `!stop` TO"
-                f" STOP THE BOT AND RESTART IT TO CHANGE THE SETTINGS!"
-            )
+        if c["users"][f"{ctx.author.id}"]:
+            if c["users"][f"{ctx.author.id}"] == f"{username}":
+                return await ctx.send(
+                    f"THE BOT IS ALREADY RUNNING ON THIS ACCOUNT! PLEASE DO `!stop` TO"
+                    f" STOP THE BOT AND RESTART IT TO CHANGE THE SETTINGS!"
+                )
         """
         login using !login username password wpm accuracy safe_mode
         """
