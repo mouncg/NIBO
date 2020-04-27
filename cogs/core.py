@@ -297,6 +297,9 @@ RUNNING
                 accuracy = dat["info"][uname].get("accuracy")
                 safe_mode = dat["info"][uname].get("safe_mode")
                 wpm = dat["info"][uname].get("wpm")
+                if accuracy >= 95:
+                    accuracy = 80
+                    await ctx.send("ACCURACY IS TOO HIGH, CHANGED TO 80!")
                 if wpm >= 111:
                     wpm = 70
                     await ctx.send("WPM IS TOO HIGH, LOADED TO 70!")
@@ -329,6 +332,9 @@ RUNNING
         wpm: int = None,
         accuracy: int = None,
     ):
+        if accuracy >= 95:
+            accuracy = 80
+            await ctx.send("ACCURACY IS TOO HIGH, CHANGED TO 80!")
         if wpm >= 111:
             wpm = 70
             await ctx.send("WPM IS TOO HIGH, LOADED TO 70!")
