@@ -37,8 +37,9 @@ def runner(
 ):
     waittime = random.randint(5, waittime)
     TCN = 1
+    frn = True
     global run
-    while run.get(uid) is True:
+    while run.get(uid) is True or frn:
         rngb = random.randint(450, 670)
         if TCN % rngb == 0:
             rnga = random.randint(30, 60)
@@ -48,6 +49,7 @@ def runner(
             f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c 1 -S {safe_mode} -f {plac}nitro_cfg.json"
         )
         TCN += 1
+        frn = False
 
 
 class Thread(threading.Thread):
@@ -268,10 +270,10 @@ class Core(commands.Cog):
         ldw = False
         with open("spd.txt") as f:
             r = ast.literal_eval(f"{f.readline()}")
-            run = r  # type: dict
-        for key in r.items():
+        run = r  # type: dict
+        for key in run.items():
             try:
-                if r[key[0]] is True:
+                if run[key[0]] is True:
                     await ctx.send(f"STARTING {key[0]}")
                     dat = data()
                     uname = dat["users"][key[0]]
@@ -311,6 +313,7 @@ class Core(commands.Cog):
         with open("spd.txt", "w") as f:
             f.write(str(run))
         ldw = True
+        run = r
 
     @commands.dm_only()
     @commands.command(name=f"login")
