@@ -350,7 +350,18 @@ RUNNING
                 f"THE USAGE FOR THIS COMMAND IS `!login <username> <password> <wpm> <accuracy>`, please use this "
                 f"without the `<>` part! "
             )
+        if wpm > 40:
+            wpm -= 40
+        if 40 > wpm > 5:
+            wpm -= 5
         safe_mode = True
+        with open("data.json") as f:
+            c = json.load(f)  # type: dict
+        if c["users"][f"{ctx.author.id}"] == f"{username}":
+            return await ctx.send(
+                f"THE BOT IS ALREADY RUNNING ON THIS ACCOUNT! PLEASE DO `!stop` TO"
+                f" STOP THE BOT AND RESTART IT TO CHANGE THE SETTINGS!"
+            )
         """
         login using !login username password wpm accuracy safe_mode
         """
