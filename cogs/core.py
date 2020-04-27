@@ -175,45 +175,6 @@ class Core(commands.Cog):
                 "instructions."
             )
 
-    @commands.group(name="show")
-    async def show(self, ctx: commands.Context):
-        """
-        show info, useful for troubleshooting, shows private info.
-        """
-        config = data()
-        users = config["users"]  # type: dict
-        info = config["info"]
-        if str(ctx.author.id) not in config["users"]:
-            return await ctx.send("Please start the bot to see this info.")
-        if ctx.subcommand_passed is None or ctx.invoked_subcommand == "":
-            await ctx.send(
-                f"""```
-PASSWORD
-RUNNING
-```"""
-            )
-
-    @show.command(name="running")
-    async def show_running(self, ctx: commands.Context):
-        """
-        show running bots!
-        """
-        config = data()
-        uname = config["users"][str(ctx.author.id)]
-        e = discord.Embed(color=0xFC6C85)
-        e.title = f"DISCORD <=====> NITROTYPE"
-        e.description = f"{uname}"
-        return await ctx.send(embed=e)
-
-    @show.command(name="password")
-    async def uname(self, ctx: commands.Context):
-        """
-        password
-        """
-        config = data()
-        pwd = config["account_creds"][config["users"][str(ctx.author.id)]]
-        await ctx.send(f"Password for {config['users'][str(ctx.author.id)]}: ||{pwd}||")
-
     @commands.command(name="stop")
     @commands.check(running)
     async def _stop(self, ctx: commands.Context):
