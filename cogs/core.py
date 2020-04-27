@@ -37,8 +37,10 @@ def runner(
     TCN = 1
     global run
     while run.get(uid) is True:
-        if TCN % 500 == 0:
-            sleep(60 * 30)
+        rngb = random.randint(450, 670)
+        if TCN % rngb == 0:
+            rnga = random.randint(30, 60)
+            sleep(60 * rnga)
         sleep(waittime)
         system(
             f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c 1 -S {safe_mode} -f {plac}nitro_cfg.json"
