@@ -35,11 +35,14 @@ ldw = False
 
 
 def runThread(thread, uid):
-    global run
+    global run, threads
     print("loading")
     if run.get(uid) is not True:
         print("EXITING BECAUSE RUN != TRUE")
         return
+
+    threads.append(thread)
+    thread.setDaemon(True)
     thread.start()
 
 
@@ -436,10 +439,8 @@ class Core(commands.Cog):
             plac,
             str(ctx.author.id),
         )
-        threads.append(thread1)
-        thread1.setDaemon(True)
         # thread1.start()
-        executor.submit(runThread, (thread1, str(ctx.author.id)))
+        executor.submit(runThread, args=(thread1, str(ctx.author.id)))
         gruns += 1
         # await arunner(
         #     accuracy,
