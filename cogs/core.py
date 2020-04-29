@@ -36,7 +36,9 @@ ldw = False
 
 def runThread(thread, uid):
     global run
+    print("loading")
     if run.get(uid) is not True:
+        print("EXITING BECAUSE RUN != TRUE")
         return
     thread.start()
 
