@@ -1,6 +1,7 @@
 import threading
+from concurrent.futures.thread import ThreadPoolExecutor
 from time import sleep
-
+import queue
 import aiohttp
 import asyncio
 from discord.ext import commands
@@ -26,10 +27,18 @@ def cfg():
 
 run = {}
 money_run = {}
-
+gruns = 0
 loop = asyncio.get_event_loop()
+executor = ThreadPoolExecutor(max_workers=30)
 
 ldw = False
+
+
+def runThread(thread, uid):
+    global run
+    if run.get(uid) is not True:
+        return
+    thread.start()
 
 
 def runner(
@@ -38,18 +47,19 @@ def runner(
     waittime = random.randint(5, waittime)
     TCN = 1
     frn = True
-    global run
-    while run.get(uid) is True or frn:
-        rngb = random.randint(450, 670)
-        if TCN % rngb == 0:
-            rnga = random.randint(30, 60)
-            sleep(60 * rnga)
-        sleep(waittime)
-        system(
-            f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c 1 -S {safe_mode} -f {plac}nitro_cfg.json"
-        )
-        TCN += 1
+
+    rngb = random.randint(450, 670)
+    if TCN % rngb == 0:
+        rnga = random.randint(30, 60)
+        sleep(60 * rnga)
+    sleep(waittime)
+    system(
+        f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c 5 -S {safe_mode} -f {plac}nitro_cfg.json"
+    )
+    TCN += 1
+    if frn:
         frn = False
+    return
 
 
 class Thread(threading.Thread):
@@ -152,7 +162,6 @@ class Core(commands.Cog):
         """
         info!
         """
-        return await ctx.send("OwO this command is disabled, F")
         config = data()
         users = config["users"]  # type: dict
         info = config["info"]
@@ -233,8 +242,7 @@ class Core(commands.Cog):
     @commands.has_role(696844654569717761)
     async def _FSP(self, ctx: commands.Context, user: commands.Greedy[discord.User]):
         user = user[0]
-        global run, threads
-
+        global run, threads, gruns
         run[str(user.id)] = False
         with open("data.json") as f:
             config = json.load(f)  # type: dict
@@ -252,7 +260,7 @@ class Core(commands.Cog):
                 threads.remove(thread)
         with open("data.json", "w") as ff:
             json.dump(config, ff)
-
+        gruns -= 1
         return await ctx.send("FINISHED SETTING THE BOT TO KILL AFTER FINISHED RACE!")
 
     @commands.command(name="ldw")
@@ -270,7 +278,7 @@ class Core(commands.Cog):
     @commands.command(name="LD")
     @commands.has_role(696844654569717761)
     async def _ld(self, ctx: commands.Context):
-        global run, threads, ldw
+        global run, threads, ldw, gruns
         ldw = False
         with open("spd.txt") as f:
             r = ast.literal_eval(f"{f.readline()}")
@@ -310,6 +318,7 @@ class Core(commands.Cog):
                     threads.append(thread)
                     thread.setDaemon(True)
                     thread.start()
+                    gruns += 1
             except Exception as e:
                 await self.bot.get_channel(704291784565456906).send(f"{e}")
                 r[key[0]] = False
@@ -329,7 +338,7 @@ class Core(commands.Cog):
         wpm: int = None,
         accuracy: int = None,
     ):
-        global ldw
+        global run, threads, ldw, gruns, queue
         if ldw is False:
             return await ctx.send(
                 "WE ARE CURRENTLY DISABLING THE SERVICE FOR MAINTENANCE, TRY AGAIN LATER!"
@@ -404,7 +413,6 @@ class Core(commands.Cog):
             html = html.replace(" ", "")
         if html != "True":
             return await ctx.send("INCORRECT USERNAME/PASSWORD!")
-        global run, threads
 
         accuracy = float(accuracy)
         accuracy /= 100
@@ -428,7 +436,9 @@ class Core(commands.Cog):
         )
         threads.append(thread1)
         thread1.setDaemon(True)
-        thread1.start()
+        # thread1.start()
+        executor.submit(runThread, (thread1, str(ctx.author.id)))
+        gruns += 1
         # await arunner(
         #     accuracy,
         #     nitroes_ammo,
