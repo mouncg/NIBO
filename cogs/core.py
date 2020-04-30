@@ -192,8 +192,8 @@ class Core(commands.Cog):
         global idb, unb
         with open("id_blacklist.txt") as f:
             idb = ast.literal_eval(f"{f.readline()}")
-        with open("username_blacklist.txt") as f:
-            unb = ast.literal_eval(f"{f.readline()}")
+        with open("username_blacklist.txt") as ff:
+            unb = ast.literal_eval(f"{ff.readline()}")
 
     @commands.command("ping")
     async def ping(self, ctx: commands.Context):
