@@ -22,7 +22,9 @@ async def worker(q: asyncio.Queue):
     global threads
     while True:
         xfn = await q.get()  # type: Thread
+        print("x")
         if run.get(xfn.uid) is True:
+            print("y")
             # Get a "work item" out of the queue.
 
             # Sleep for the "sleep_for" seconds.
@@ -340,7 +342,7 @@ class Core(commands.Cog):
         global queue
         tasks = []
         if queue.qsize() < 30:
-            for i in range(queue.qsize() - 1):
+            for i in range(queue.qsize()):
                 task = asyncio.create_task(worker(queue))
                 tasks.append(task)
         else:
