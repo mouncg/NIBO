@@ -28,13 +28,15 @@ async def worker(q: asyncio.Queue):
             # Get a "work item" out of the queue.
 
             # Sleep for the "sleep_for" seconds.
-            if xfn.stopped() is True:
+            if xfn.stopped():
                 xfn.start()
                 threads.append(xfn)
 
                 # Notify the queue that the "work item" has been processed.
                 q.task_done()
                 q.put_nowait(xfn)
+            else:
+                print("Running?")
 
 
 def data():
