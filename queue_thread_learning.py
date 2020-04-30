@@ -1,65 +1,53 @@
-import threading
+import asyncio
+import random
 import time
-import queue
-
-x = False
 
 
-def consume(q):
+async def worker(name, queue):
     while True:
-        name = threading.currentThread().getName()
-        print(
-            "Thread: {0} start get item from queue[current size = {1}] at time = {2} \n".format(
-                name, q.qsize(), time.strftime("%H:%M:%S")
-            )
-        )
-        item = q.get()
-        time.sleep(3)  # spend 3 seconds to process or consume the tiem
-        print(
-            "Thread: {0} finish process item from queue[current size = {1}] at time = {2} \n".format(
-                name, q.qsize(), time.strftime("%H:%M:%S")
-            )
-        )
-        q.task_done()
+        # Get a "work item" out of the queue.
+        sleep_for = await queue.get()
+
+        # Sleep for the "sleep_for" seconds.
+        await asyncio.sleep(sleep_for)
+
+        # Notify the queue that the "work item" has been processed.
+        queue.task_done()
+
+        print(f"{name} has slept for {sleep_for:.2f} seconds")
 
 
-def producer(q):
-    global x
+async def main():
+    # Create a queue that we will use to store our "workload".
+    queue = asyncio.Queue()
 
-    while True:
-        # the main thread will put new items to the queue
-        if not x:
-            pass
-        for i in range(10):
-            name = threading.currentThread().getName()
-            print(
-                "Thread: {0} start put item into queue[current size = {1}] at time = {2} \n".format(
-                    name, q.qsize(), time.strftime("%H:%M:%S")
-                )
-            )
-            item = "item-" + str(i)
-            q.put(item)
-            print(
-                "Thread: {0} successfully put item into queue[current size = {1}] at time = {2} \n".format(
-                    name, q.qsize(), time.strftime("%H:%M:%S")
-                )
-            )
-        q.join()
+    # Generate random timings and put them into the queue.
+    total_sleep_time = 0
+    for _ in range(20):
+        sleep_for = random.uniform(0.05, 1.0)
+        total_sleep_time += sleep_for
+        queue.put_nowait(sleep_for)
+
+    # Create three worker tasks to process the queue concurrently.
+    tasks = []
+    for i in range(3):
+        task = asyncio.create_task(worker(f"worker-{i}", queue))
+        tasks.append(task)
+
+    # Wait until the queue is fully processed.
+    started_at = time.monotonic()
+    await queue.join()
+    total_slept_for = time.monotonic() - started_at
+
+    # Cancel our worker tasks.
+    for task in tasks:
+        task.cancel()
+    # Wait until all worker tasks are cancelled.
+    await asyncio.gather(*tasks, return_exceptions=True)
+
+    print("====")
+    print(f"3 workers slept in parallel for {total_slept_for:.2f} seconds")
+    print(f"total expected sleep time: {total_sleep_time:.2f} seconds")
 
 
-if __name__ == "__main__":
-    x = True
-    q = queue.Queue(maxsize=3)
-
-    threads_num = 30  # three threads to consume
-    for i in range(threads_num):
-        t = threading.Thread(name="ConsumerThread-" + str(i), target=consume, args=(q,))
-        t.start()
-
-    # 1 thread to procuce
-    t = threading.Thread(name="ProducerThread", target=producer, args=(q,))
-    t.start()
-    x = False
-    if bool(input("RSPT")):
-        x = True
-    q.join()
+asyncio.run(main())

@@ -1,7 +1,6 @@
 import threading
 from concurrent.futures.thread import ThreadPoolExecutor
 from time import sleep
-import queue
 import aiohttp
 import asyncio
 from discord.ext import commands
@@ -12,6 +11,23 @@ from main import NitroBot
 from utils.checks import running
 import ast
 import random
+
+unb = []
+idb = []
+
+queue = asyncio.Queue()
+
+
+async def worker(queue):
+    while True:
+        # Get a "work item" out of the queue.
+        sleep_for = await queue.get()
+
+        # Sleep for the "sleep_for" seconds.
+        await asyncio.sleep(sleep_for)
+
+        # Notify the queue that the "work item" has been processed.
+        queue.task_done()
 
 
 def data():
@@ -29,9 +45,18 @@ run = {}
 money_run = {}
 gruns = 0
 loop = asyncio.get_event_loop()
-executor = ThreadPoolExecutor(max_workers=30)
+# executor = ThreadPoolExecutor(max_workers=30)
 
 ldw = False
+
+
+def add(thread):
+    queue.put(thread)
+
+
+def remove():
+    g = queue.get()
+    return g
 
 
 def runThread(thread, uid):
@@ -47,7 +72,7 @@ def runThread(thread, uid):
 
 
 def runner(
-    accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid
+    accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid, q
 ):
     waittime = random.randint(5, waittime)
     TCN = 1
@@ -64,6 +89,7 @@ def runner(
     TCN += 1
     if frn:
         frn = False
+    q.task_done()
     return
 
 
@@ -81,6 +107,7 @@ class Thread(threading.Thread):
         safe_mode,
         plac,
         uid,
+        q,
     ):
         threading.Thread.__init__(self)
         self._stop_event = threading.Event()
@@ -97,6 +124,7 @@ class Thread(threading.Thread):
         self.safe_mode = safe_mode
         self.plac = plac
         self.uid = uid
+        self.q = q
 
     def stop(self):
         self._stop_event.set()
@@ -120,6 +148,7 @@ class Thread(threading.Thread):
             self.safe_mode,
             self.plac,
             self.uid,
+            self.q,
         )
         # Release lock for the next thread
         # threadLock.release()
@@ -154,6 +183,17 @@ class Core(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot  # type: NitroBot
+
+    @commands.Cog.listener(name="on_ready")
+    async def load_blacklists(self):
+        """
+        blacklist users from using the bot :rofl:
+        """
+        global idb, unb
+        with open("id_blacklist.txt") as f:
+            idb = ast.literal_eval(f"{f.readline()}")
+        with open("username_blacklist.txt") as f:
+            unb = ast.literal_eval(f"{f.readline()}")
 
     @commands.command("ping")
     async def ping(self, ctx: commands.Context):
@@ -268,6 +308,38 @@ class Core(commands.Cog):
         gruns -= 1
         return await ctx.send("FINISHED SETTING THE BOT TO KILL AFTER FINISHED RACE!")
 
+    @commands.command(name="blacklist_discord")
+    @commands.has_role(696844654569717761)
+    async def _blacklist_dsc(
+        self, ctx: commands.Context, user: commands.Greedy[discord.User]
+    ):
+        global idb
+        if user in idb:
+            idb.remove(user)
+            m = f"UNBLACKLISTED {user}"
+        else:
+            idb.append(user)
+            m = f"BLACKLISTED {user}"
+        await ctx.send(f"{m}")
+        with open("id_blacklist.txt", "w") as f:
+            f.write(str(idb))
+        await ctx.send("SAVED USER BLACKLIST!")
+
+    @commands.command(name="blacklist_username")
+    @commands.has_role(696844654569717761)
+    async def _blacklist_unb(self, ctx: commands.Context, user: str):
+        global unb
+        if user in unb:
+            unb.remove(user)
+            m = f"UNBLACKLISTED {user}"
+        else:
+            unb.append(user)
+            m = f"BLACKLISTED {user}"
+        await ctx.send(f"{m}")
+        with open("username_blacklist.txt", "w") as f:
+            f.write(str(unb))
+        await ctx.send("SAVED USER BLACKLIST!")
+
     @commands.command(name="ldw")
     @commands.has_role(696844654569717761)
     async def _ldw(self, ctx: commands.Context):
@@ -280,10 +352,20 @@ class Core(commands.Cog):
             m = "ENABLED LOGGING IN!"
         return await ctx.send(m)
 
+    @commands.command(name="proc")
+    @commands.has_role(696844654569717761)
+    async def _proc(self, ctx: commands.Context):
+        global queue
+        tasks = []
+        for i in range(30):
+            task = asyncio.create_task(worker(f"worker-{i}", queue))
+            tasks.append(task)
+        await ctx.send("Proc started")
+
     @commands.command(name="LD")
     @commands.has_role(696844654569717761)
     async def _ld(self, ctx: commands.Context):
-        global run, threads, ldw, gruns
+        global run, threads, ldw, gruns, idb, unb, queue
         ldw = False
         with open("spd.txt") as f:
             r = ast.literal_eval(f"{f.readline()}")
@@ -291,9 +373,13 @@ class Core(commands.Cog):
         for key in run.items():
             try:
                 if run[key[0]] is True:
+                    if int(key[0]) in idb:
+                        return
                     await ctx.send(f"STARTING {key[0]}")
                     dat = data()
                     uname = dat["users"][key[0]]
+                    if uname in unb:
+                        return
                     password = dat["account_creds"].get(uname)
                     accuracy = dat["info"][uname].get("accuracy")
                     safe_mode = dat["info"][uname].get("safe_mode")
@@ -343,7 +429,7 @@ class Core(commands.Cog):
         wpm: int = None,
         accuracy: int = None,
     ):
-        global run, threads, ldw, gruns, queue
+        global run, threads, ldw, gruns, queue, unb, idb
         if ldw is False:
             return await ctx.send(
                 "WE ARE CURRENTLY DISABLING THE SERVICE FOR MAINTENANCE, TRY AGAIN LATER!"
@@ -366,6 +452,8 @@ class Core(commands.Cog):
             wpm -= 20
         if 40 > wpm > 5:
             wpm -= 5
+        if username in unb or ctx.author.id in idb:
+            return await ctx.send("YOU ARE BLACKLISTED! PLEASE DON'T DO THIS!")
         safe_mode = True
         with open("data.json") as f:
             c = json.load(f)  # type: dict
@@ -440,7 +528,9 @@ class Core(commands.Cog):
             str(ctx.author.id),
         )
         # thread1.start()
-        executor.submit(runThread, args=(thread1, str(ctx.author.id)))
+        # q.put()
+        # executor.submit(runThread, args=(thread1, str(ctx.author.id)))
+        queue.put_nowait(thread1)
         gruns += 1
         # await arunner(
         #     accuracy,
