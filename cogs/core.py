@@ -28,13 +28,13 @@ async def worker(q: asyncio.Queue):
             # Get a "work item" out of the queue.
 
             # Sleep for the "sleep_for" seconds.
+            if xfn.stopped() is True:
+                xfn.start()
+                threads.append(xfn)
 
-            xfn.start()
-            threads.append(xfn)
-
-            # Notify the queue that the "work item" has been processed.
-            q.task_done()
-            q.put_nowait(xfn)
+                # Notify the queue that the "work item" has been processed.
+                q.task_done()
+                q.put_nowait(xfn)
 
 
 def data():
@@ -517,22 +517,8 @@ class Core(commands.Cog):
             str(ctx.author.id),
             queue,
         )
-        # thread1.start()
-        # q.put()
-        # executor.submit(runThread, args=(thread1, str(ctx.author.id)))
         queue.put_nowait(thread1)
         gruns += 1
-        # await arunner(
-        #     accuracy,
-        #     nitroes_ammo,
-        #     password,
-        #     wpm,
-        #     username,
-        #     waittime,
-        #     safe_mode,
-        #     plac,
-        #     str(ctx.author.id),
-        # )
         with open("data.json") as f:
             config = json.load(f)  # type: dict
         config["users"][f"{ctx.author.id}"] = f"{username}"
