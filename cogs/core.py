@@ -19,18 +19,20 @@ queue = asyncio.Queue()
 
 
 async def worker(q: asyncio.Queue):
+    global threads
     while True:
         xfn = await q.get()  # type: Thread
         if run.get(xfn.uid) is True:
             # Get a "work item" out of the queue.
 
             # Sleep for the "sleep_for" seconds.
-            xfn.daemon = False
+
             xfn.start()
 
             # Notify the queue that the "work item" has been processed.
             q.task_done()
             q.put_nowait(xfn)
+            threads.append(xfn)
 
 
 def data():
@@ -51,18 +53,6 @@ loop = asyncio.get_event_loop()
 # executor = ThreadPoolExecutor(max_workers=30)
 
 ldw = False
-
-
-def runThread(thread, uid):
-    global run, threads
-    print("loading")
-    if run.get(uid) is not True:
-        print("EXITING BECAUSE RUN != TRUE")
-        return
-
-    threads.append(thread)
-    thread.setDaemon(True)
-    thread.start()
 
 
 def runner(
@@ -130,7 +120,6 @@ class Thread(threading.Thread):
         # Acquire lock to synchronize thread
         # threadLock.acquire()
         print(f"{self.name} [--+--] {self.counter}")
-        print(f"{self.name} [--+--] started the daemon")
         runner(
             self.accuracy,
             self.nitroes_ammo,
@@ -398,10 +387,10 @@ class Core(commands.Cog):
                         safe_mode,
                         plac,
                         str(ctx.author.id),
+                        queue,
                     )
-                    threads.append(thread)
-                    thread.setDaemon(True)
-                    thread.start()
+
+                    thread.daemon = False
                     gruns += 1
             except Exception as e:
                 await self.bot.get_channel(704291784565456906).send(f"{e}")
