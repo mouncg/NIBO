@@ -21,7 +21,7 @@ class custom_commands(commands.Cog):
             **SUPPORT:** EppyPrime™#1461, Limt#6491
             **TRAVIS:** SOON™""",
         )
-        return await ctx.send(e)
+        return await ctx.send(embed=e)
 
 
 def setup(bot):
