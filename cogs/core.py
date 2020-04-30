@@ -39,8 +39,6 @@ async def worker(q: asyncio.Queue):
             else:
                 print(f"Running?\nproc syst:{xfn}\n{xfn.stopped()}")
 
-            await asyncio.gather(*tasks, return_exceptions=True)
-
 
 def data():
     with open("data.json") as f:
@@ -79,8 +77,15 @@ def runner(
             rnga = random.randint(30, 60)
             sleep(60 * rnga)
         sleep(waittime)
+        rxpl = (
+            "".join(random.randint(1, 10000))
+            .replace("1", "a")
+            .replace("2", "b")
+            .replace("3", "c")
+            .join(".log")
+        )
         system(
-            f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c 5 -S {safe_mode} -f {plac}nitro_cfg.json"
+            f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c 5 -S {safe_mode} -f {plac}nitro_cfg.json >> {rxpl}"
         )
         TCN += 1
         if frn:
