@@ -36,7 +36,7 @@ async def worker(q: asyncio.Queue):
                 q.task_done()
                 q.put_nowait(xfn)
             else:
-                print("Running?")
+                print(f"Running?\nproc syst:{xfn}\n{xfn.stopped()}")
 
 
 def data():
