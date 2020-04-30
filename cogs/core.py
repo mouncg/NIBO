@@ -433,7 +433,7 @@ class Core(commands.Cog):
         wpm: int = None,
         accuracy: int = None,
     ):
-        global run, threads, ldw, gruns, queue, unb, idb
+        global run, threads, ldw, gruns, queue, unb, idb, uLock
         if ldw is False:
             return await ctx.send(
                 "WE ARE CURRENTLY DISABLING THE SERVICE FOR MAINTENANCE, TRY AGAIN LATER!"
@@ -518,7 +518,7 @@ class Core(commands.Cog):
         waittime = 29
 
         run[str(ctx.author.id)] = True
-        uLock[f"{ctx.author.id}"] = False
+        uLock[f"{ctx.author.id}"] = True
         thread1 = Thread(
             f"Thread{len(threads) + 1}",
             1,
