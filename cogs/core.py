@@ -19,10 +19,11 @@ queue = asyncio.Queue()
 
 
 async def worker(q: asyncio.Queue):
-    global threads
+    global threads, uLock
     while True:
         xfn = await q.get()  # type: Thread
         print("x")
+        uLock[f"{xfn.uid}"] = False
         if run.get(xfn.uid) is True:
             print("y")
             # Get a "work item" out of the queue.
@@ -50,6 +51,7 @@ def cfg():
         return json.load(f)
 
 
+uLock = {}
 run = {}
 money_run = {}
 gruns = 0
@@ -62,22 +64,26 @@ ldw = False
 def runner(
     accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid, q,
 ):
-    waittime = random.randint(5, waittime)
-    TCN = 1
-    frn = True
+    global uLock
+    if uLock[f"{uid}"]:
+        pass
+    else:
+        waittime = random.randint(5, waittime)
+        TCN = 1
+        frn = True
 
-    rngb = random.randint(450, 670)
-    if TCN % rngb == 0:
-        rnga = random.randint(30, 60)
-        sleep(60 * rnga)
-    sleep(waittime)
-    system(
-        f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c 5 -S {safe_mode} -f {plac}nitro_cfg.json"
-    )
-    TCN += 1
-    if frn:
-        frn = False
-    q.task_done()
+        rngb = random.randint(450, 670)
+        if TCN % rngb == 0:
+            rnga = random.randint(30, 60)
+            sleep(60 * rnga)
+        sleep(waittime)
+        system(
+            f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c 5 -S {safe_mode} -f {plac}nitro_cfg.json"
+        )
+        TCN += 1
+        if frn:
+            frn = False
+        q.task_done()
 
 
 class Thread(threading.Thread):
@@ -458,7 +464,7 @@ class Core(commands.Cog):
         # except KeyError:
         #     pass
         """
-        login using !login username password wpm accuracy safe_mode
+        login using !login username password wpm accuracy
         """
         uid = ctx.author.id
         guild = self.bot.get_guild(695056476754018394)  # type: discord.Guild
@@ -505,6 +511,7 @@ class Core(commands.Cog):
         waittime = 29
 
         run[str(ctx.author.id)] = True
+        uLock[f"{ctx.author.id}"] = False
         thread1 = Thread(
             f"Thread{len(threads) + 1}",
             1,
