@@ -340,7 +340,7 @@ class Core(commands.Cog):
         global queue
         tasks = []
         if queue.qsize() < 30:
-            for i in range(queue.qsize()):
+            for i in range(queue.qsize() - 1):
                 task = asyncio.create_task(worker(queue))
                 tasks.append(task)
         else:
