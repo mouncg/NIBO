@@ -137,7 +137,7 @@ bot.default_prefix, bot.description = (
 with open("config.json") as f:
     bot.config = json.load(f)
     bot.owner_ids = bot.config["admin_ids"]
-initial_extensions = ["cogs.core", "cogs.error_handler", "cogs.owner"]
+initial_extensions = ["cogs.core", "cogs.error_handler", "cogs.owner", "cogs.custom"]
 
 
 def load_exts(bot):
