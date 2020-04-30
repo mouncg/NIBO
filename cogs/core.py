@@ -351,7 +351,7 @@ class Core(commands.Cog):
         global queue
         tasks = []
         for i in range(30):
-            task = asyncio.create_task(worker(f"worker-{i}", queue))
+            task = asyncio.create_task(worker(queue))
             tasks.append(task)
         await ctx.send("Proc started")
 
