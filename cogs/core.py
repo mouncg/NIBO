@@ -28,11 +28,11 @@ async def worker(q: asyncio.Queue):
             # Sleep for the "sleep_for" seconds.
 
             xfn.start()
+            threads.append(xfn)
 
             # Notify the queue that the "work item" has been processed.
             q.task_done()
             q.put_nowait(xfn)
-            threads.append(xfn)
 
 
 def data():
@@ -339,9 +339,14 @@ class Core(commands.Cog):
     async def _proc(self, ctx: commands.Context):
         global queue
         tasks = []
-        for i in range(30):
-            task = asyncio.create_task(worker(queue))
-            tasks.append(task)
+        if queue.qsize() < 30:
+            for i in range(queue.qsize()):
+                task = asyncio.create_task(worker(queue))
+                tasks.append(task)
+        else:
+            for i in range(30):
+                task = asyncio.create_task(worker(queue))
+                tasks.append(task)
         await ctx.send("Proc started")
 
     @commands.command(name="LD")
