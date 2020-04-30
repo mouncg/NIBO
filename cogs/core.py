@@ -18,16 +18,19 @@ idb = []
 queue = asyncio.Queue()
 
 
-async def worker(queue):
+async def worker(q: asyncio.Queue):
     while True:
-        # Get a "work item" out of the queue.
-        sleep_for = await queue.get()
+        xfn = await q.get()  # type: Thread
+        if run.get(xfn.uid) is True:
+            # Get a "work item" out of the queue.
 
-        # Sleep for the "sleep_for" seconds.
-        await asyncio.sleep(sleep_for)
+            # Sleep for the "sleep_for" seconds.
+            xfn.daemon = False
+            xfn.start()
 
-        # Notify the queue that the "work item" has been processed.
-        queue.task_done()
+            # Notify the queue that the "work item" has been processed.
+            q.task_done()
+            q.put_nowait(xfn)
 
 
 def data():
@@ -50,15 +53,6 @@ loop = asyncio.get_event_loop()
 ldw = False
 
 
-def add(thread):
-    queue.put(thread)
-
-
-def remove():
-    g = queue.get()
-    return g
-
-
 def runThread(thread, uid):
     global run, threads
     print("loading")
@@ -72,7 +66,7 @@ def runThread(thread, uid):
 
 
 def runner(
-    accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid, q
+    accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid, q,
 ):
     waittime = random.randint(5, waittime)
     TCN = 1
@@ -90,7 +84,6 @@ def runner(
     if frn:
         frn = False
     q.task_done()
-    return
 
 
 class Thread(threading.Thread):
@@ -107,7 +100,7 @@ class Thread(threading.Thread):
         safe_mode,
         plac,
         uid,
-        q,
+        queue,
     ):
         threading.Thread.__init__(self)
         self._stop_event = threading.Event()
@@ -124,7 +117,7 @@ class Thread(threading.Thread):
         self.safe_mode = safe_mode
         self.plac = plac
         self.uid = uid
-        self.q = q
+        self.queue = queue
 
     def stop(self):
         self._stop_event.set()
@@ -148,7 +141,7 @@ class Thread(threading.Thread):
             self.safe_mode,
             self.plac,
             self.uid,
-            self.q,
+            self.queue,
         )
         # Release lock for the next thread
         # threadLock.release()
@@ -526,6 +519,7 @@ class Core(commands.Cog):
             safe_mode,
             plac,
             str(ctx.author.id),
+            queue,
         )
         # thread1.start()
         # q.put()
