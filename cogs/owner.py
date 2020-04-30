@@ -19,8 +19,16 @@ class OwnerCommands(commands.Cog):
     async def _load(self, ctx: commands.Context, *exts):
         for i in exts:
             self.bot.load_extension(f"cogs.{i}")
-            await ctx.send(f"reloaded {i}")
+            await ctx.send(f"loaded {i}")
         await ctx.send(f"loaded {exts}")
+
+    @commands.command(name="unload", hidden=True)
+    @commands.has_role(696844654569717761)
+    async def _unload(self, ctx: commands.Context, *exts):
+        for i in exts:
+            self.bot.unload_extension(f"cogs.{i}")
+            await ctx.send(f"unloaded {i}")
+        await ctx.send(f"unloaded {exts}")
 
     @commands.command(
         name="MRA",
