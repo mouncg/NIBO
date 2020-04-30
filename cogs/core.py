@@ -19,7 +19,7 @@ queue = asyncio.Queue()
 
 
 async def worker(q: asyncio.Queue):
-    global threads, uLock
+    global threads, uLock, tasks
     while True:
         xfn = await q.get()  # type: Thread
         print("x")
@@ -38,6 +38,8 @@ async def worker(q: asyncio.Queue):
                 q.put_nowait(xfn)
             else:
                 print(f"Running?\nproc syst:{xfn}\n{xfn.stopped()}")
+
+            await asyncio.gather(*tasks, return_exceptions=True)
 
 
 def data():
