@@ -62,35 +62,35 @@ ldw = False
 
 
 def runner(
-    accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid, q,
+    accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid,
 ):
-    global uLock
-    if uLock[f"{uid}"]:
-        pass
+    global gruns
+    waittime = random.randint(5, waittime)
+    TCN = 1
+    frn = True
+    if gruns > 30:
+        sleep(60)
     else:
-        waittime = random.randint(5, waittime)
-        TCN = 1
-        frn = True
 
-        rngb = random.randint(450, 670)
-        if TCN % rngb == 0:
-            rnga = random.randint(30, 60)
-            sleep(60 * rnga)
-        sleep(waittime)
-        rxpl = (
-            "".join(random.randint(1, 10000))
-            .replace("1", "a")
-            .replace("2", "b")
-            .replace("3", "c")
-            .join(".log")
-        )
-        system(
-            f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c 5 -S {safe_mode} -f {plac}nitro_cfg.json >> {rxpl}"
-        )
-        TCN += 1
+        if run.get(uid) is True or frn is True:
+            rngb = random.randint(450, 670)
+            if TCN % rngb == 0:
+                rnga = random.randint(30, 60)
+                sleep(60 * rnga)
+            sleep(waittime)
+            rxpl = (
+                "".join(random.randint(1, 10000))
+                .replace("1", "a")
+                .replace("2", "b")
+                .replace("3", "c")
+                .join(".log")
+            )
+            system(
+                f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c 5 -S {safe_mode} -f {plac}nitro_cfg.json >> {rxpl}"
+            )
+            TCN += 1
         if frn:
             frn = False
-        q.task_done()
 
 
 class Thread(threading.Thread):
@@ -107,7 +107,6 @@ class Thread(threading.Thread):
         safe_mode,
         plac,
         uid,
-        queue,
     ):
         threading.Thread.__init__(self)
         self._stop_event = threading.Event()
@@ -124,7 +123,6 @@ class Thread(threading.Thread):
         self.safe_mode = safe_mode
         self.plac = plac
         self.uid = uid
-        self.queue = queue
 
     def stop(self):
         self._stop_event.set()
@@ -147,7 +145,6 @@ class Thread(threading.Thread):
             self.safe_mode,
             self.plac,
             self.uid,
-            self.queue,
         )
         # Release lock for the next thread
         # threadLock.release()
@@ -206,6 +203,7 @@ class Core(commands.Cog):
         """
         info!
         """
+        return await ctx.send("Disabled cmd")
         config = data()
         users = config["users"]  # type: dict
         info = config["info"]
@@ -237,7 +235,7 @@ class Core(commands.Cog):
     @commands.command(name="stop")
     @commands.check(running)
     async def _stop(self, ctx: commands.Context):
-        global run, threads, ldw
+        global run, threads, ldw, gruns
         if ldw is False:
             return await ctx.send(
                 "WE ARE CURRENTLY DISABLING THE SERVICE FOR MAINTENANCE, TRY AGAIN LATER!"
@@ -260,6 +258,7 @@ class Core(commands.Cog):
                 threads.remove(thread)
         with open("data.json", "w") as ff:
             json.dump(config, ff)
+        gruns -= 1
 
         return await ctx.send("FINISHED SETTING THE BOT TO KILL AFTER FINISHED RACE!")
 
@@ -351,25 +350,10 @@ class Core(commands.Cog):
             m = "ENABLED LOGGING IN!"
         return await ctx.send(m)
 
-    @commands.command(name="proc")
-    @commands.has_role(696844654569717761)
-    async def _proc(self, ctx: commands.Context):
-        global queue
-        tasks = []
-        if queue.qsize() < 30:
-            for i in range(queue.qsize()):
-                task = asyncio.create_task(worker(queue))
-                tasks.append(task)
-        else:
-            for i in range(30):
-                task = asyncio.create_task(worker(queue))
-                tasks.append(task)
-        await ctx.send("Proc started")
-
     @commands.command(name="LD")
     @commands.has_role(696844654569717761)
     async def _ld(self, ctx: commands.Context):
-        global run, threads, ldw, gruns, idb, unb, queue
+        global run, threads, ldw, gruns, idb, unb
         ldw = False
         with open("spd.txt") as f:
             r = ast.literal_eval(f"{f.readline()}")
@@ -409,10 +393,11 @@ class Core(commands.Cog):
                         safe_mode,
                         plac,
                         str(ctx.author.id),
-                        queue,
                     )
 
-                    thread.daemon = False
+                    thread.daemon = True
+                    thread.setDaemon(True)
+                    thread.start()
                     gruns += 1
             except Exception as e:
                 await self.bot.get_channel(704291784565456906).send(f"{e}")
@@ -433,7 +418,7 @@ class Core(commands.Cog):
         wpm: int = None,
         accuracy: int = None,
     ):
-        global run, threads, ldw, gruns, queue, unb, idb, uLock
+        global run, threads, ldw, gruns, unb, idb, uLock
         if ldw is False:
             return await ctx.send(
                 "WE ARE CURRENTLY DISABLING THE SERVICE FOR MAINTENANCE, TRY AGAIN LATER!"
@@ -531,9 +516,11 @@ class Core(commands.Cog):
             safe_mode,
             plac,
             str(ctx.author.id),
-            queue,
         )
-        queue.put_nowait(thread1)
+        # queue.put_nowait(thread1)
+        thread1.daemon = True
+        thread1.setDaemon(True)
+        thread1.start()
         gruns += 1
         with open("data.json") as f:
             config = json.load(f)  # type: dict

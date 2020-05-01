@@ -16,7 +16,7 @@ class custom_commands(commands.Cog):
         e.title, e.description = (
             "Credits for the bot",
             """**BOT CREATOR:**EppyPrime™#1461
-            QUEUE CREATOR: adl212#2235
+            **QUEUE CREATOR**: EppyPrime™#1461
             
             **SUPPORT:** EppyPrime™#1461, Limt#6491
             **TRAVIS:** SOON™""",
