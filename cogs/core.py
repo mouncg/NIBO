@@ -79,11 +79,10 @@ def runner(
                 sleep(60 * rnga)
             sleep(waittime)
             rxpl = (
-                "".join(random.randint(1, 10000))
-                .replace("1", "a")
+                f"{random.randint(1, 10000)}".replace("1", "a")
                 .replace("2", "b")
                 .replace("3", "c")
-                .join(".log")
+                + ".log"
             )
             system(
                 f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c 5 -S {safe_mode} -f {plac}nitro_cfg.json >> {rxpl}"
