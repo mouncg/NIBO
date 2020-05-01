@@ -67,7 +67,7 @@ def runner(
     global gruns
     waittime = random.randint(5, waittime)
     TCN = 1
-    while run.get(uid) is True:
+    while run.get(uid) is True or TCN <= 3:
         if gruns > 30:
             sleep(60)
         else:
