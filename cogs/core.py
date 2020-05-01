@@ -67,56 +67,20 @@ def runner(
     global gruns
     waittime = random.randint(5, waittime)
     TCN = 1
-    if gruns > 30:
-        sleep(60)
-        thread = Thread(
-            f"Thread{len(threads) + 1}",
-            1,
-            accuracy,
-            nitroes_ammo,
-            password,
-            wpm,
-            username,
-            waittime,
-            safe_mode,
-            plac,
-            uid,
-        )
-        gruns -= 1
-        thread.daemon = True
-        thread.setDaemon(True)
-        thread.start()
-        gruns += 1
-    else:
-
-        while run.get(uid) is True:
+    while run.get(uid) is True:
+        if gruns > 30:
+            sleep(60)
+        else:
             rngb = random.randint(450, 670)
             if TCN % rngb == 0:
                 rnga = random.randint(30, 60)
                 sleep(60 * rnga)
             sleep(waittime)
             system(
-                f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c 5 -S {safe_mode} -f {plac}nitro_cfg.json"
+                f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c "
+                f"5 -S {safe_mode} -f {plac}nitro_cfg.json "
             )
             TCN += 1
-            thread = Thread(
-                f"Thread{len(threads) + 1}",
-                1,
-                accuracy,
-                nitroes_ammo,
-                password,
-                wpm,
-                username,
-                waittime,
-                safe_mode,
-                plac,
-                uid,
-            )
-            gruns -= 1
-            thread.daemon = True
-            thread.setDaemon(True)
-            thread.start()
-            gruns += 1
 
 
 class Thread(threading.Thread):
@@ -186,16 +150,9 @@ async def fetch(session, url, data):
         return await response.json()
 
 
-# async def arunner(
-#     accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid
-# ):
-#     global run
-#     print(run)
-#     while run.get(uid) is True:
-#         sleep(waittime)
-#         system(
-#             f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 1 -w {wpm} -u {username} -t {waittime} -c 1 -S {safe_mode} -f {plac}nitro_cfg.json"
-#         )
+# async def arunner( accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid ): global run
+# print(run) while run.get(uid) is True: sleep(waittime) system( f"nitrous -a {accuracy} -n {nitroes_ammo} -p {
+# password} -s 1 -w {wpm} -u {username} -t {waittime} -c 1 -S {safe_mode} -f {plac}nitro_cfg.json" )
 
 
 class Core(commands.Cog):
