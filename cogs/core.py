@@ -71,11 +71,11 @@ def runner(
         gruns += 1
         if gruns > 30:
             gruns -= 1
-            sleep(10)
+            sleep(random.randint(1, (60 * 2)))
         else:
             rngb = random.randint(450, 670)
             if TCN % rngb == 0:
-                rnga = random.randint(30, 60)
+                rnga = random.randint(60, 90)
                 sleep(60 * rnga)
             sleep(waittime)
             system(
