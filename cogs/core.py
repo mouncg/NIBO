@@ -68,8 +68,10 @@ def runner(
     waittime = random.randint(5, waittime)
     TCN = 1
     while run.get(uid) is True or TCN <= 3:
+        gruns += 1
         if gruns > 30:
             sleep(60)
+            gruns -= 1
         else:
             rngb = random.randint(450, 670)
             if TCN % rngb == 0:
