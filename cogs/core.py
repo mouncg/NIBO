@@ -348,22 +348,41 @@ class Core(commands.Cog):
             try:
                 if run[key[0]] is True:
                     if int(key[0]) in idb:
-                        return
+                        continue
                     await ctx.send(f"STARTING {key[0]}")
                     dat = data()
                     uname = dat["users"][key[0]]
                     if uname in unb:
-                        return
+                        continue
                     password = dat["account_creds"].get(uname)
                     accuracy = dat["info"][uname].get("accuracy")
                     safe_mode = dat["info"][uname].get("safe_mode")
                     wpm = dat["info"][uname].get("wpm")
                     if accuracy >= 97:
                         accuracy = 97
-                        await ctx.send("ACCURACY IS TOO HIGH, CHANGED TO 97!")
+                        await ctx.send(
+                            f"ACCURACY IS TOO HIGH, CHANGED TO 97! - {uname} - {key[0]}"
+                        )
                     if wpm >= 111:
                         wpm = 70
-                        await ctx.send("WPM IS TOO HIGH, LOADED TO 70!")
+                        await ctx.send(
+                            f"WPM IS TOO HIGH, LOADED TO 70! - {uname} - {key[0]}"
+                        )
+                    async with aiohttp.ClientSession() as session:
+                        html = await fetch(
+                            session,
+                            "https://www.nitrotype.com/api/login",
+                            {"username": uname, "password": password},
+                        )
+                        html = str(html).split(",")
+                        html = html[0]
+                        html = html.split(":")
+                        html = html[1]
+                        html = html.replace(" ", "")
+                    if html != "True":
+                        await ctx.send(
+                            f"INCORRECT USERNAME/PASSWORD! - probs TERMED - {uname} - {key[0]}"
+                        )
                     nitroes_ammo = 1
                     waittime = 29
                     plac = "/home/epfforce/Programming/python/"
@@ -378,7 +397,7 @@ class Core(commands.Cog):
                         waittime,
                         safe_mode,
                         plac,
-                        str(ctx.author.id),
+                        key[0],
                     )
 
                     thread.daemon = True
@@ -467,20 +486,6 @@ class Core(commands.Cog):
             await ctx.send(
                 "⚠|THE BOT IS ALREADY RUNNING! THIS COULD BREAK SOME THINGS!!!!"
             )
-
-        async with aiohttp.ClientSession() as session:
-            html = await fetch(
-                session,
-                "https://www.nitrotype.com/api/login",
-                {"username": username, "password": password},
-            )
-            html = str(html).split(",")
-            html = html[0]
-            html = html.split(":")
-            html = html[1]
-            html = html.replace(" ", "")
-        if html != "True":
-            return await ctx.send("INCORRECT USERNAME/PASSWORD!")
 
         accuracy = float(accuracy)
         accuracy /= 100
