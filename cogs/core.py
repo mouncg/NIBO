@@ -382,6 +382,9 @@ class Core(commands.Cog):
         with open("spd.txt") as f:
             r = ast.literal_eval(f"{f.readline()}")
         run = r  # type: dict
+        global pw
+        if pw == "FALSE":
+            await ctx.send("NO ENCRYPTION IS SET! THIS IS VERY BAD!")
         for key in run.items():
             try:
                 if run[key[0]] is True:
@@ -424,6 +427,8 @@ class Core(commands.Cog):
                     nitroes_ammo = 1
                     waittime = 29
                     plac = "/home/epfforce/Programming/python/"
+                    if pw != "FALSE":
+                        password = await decrypt(password, pw)
                     thread = Thread(
                         f"Thread{len(threads) + 1}",
                         1,
@@ -441,7 +446,6 @@ class Core(commands.Cog):
                     thread.daemon = True
                     thread.setDaemon(True)
                     thread.start()
-                    gruns += 1
             except Exception as e:
                 await self.bot.get_channel(704291784565456906).send(f"{e}")
                 r[key[0]] = False
@@ -550,7 +554,6 @@ class Core(commands.Cog):
         thread1.daemon = True
         thread1.setDaemon(True)
         thread1.start()
-        gruns += 1
         with open("data.json") as f:
             config = json.load(f)  # type: dict
         config["users"][f"{ctx.author.id}"] = f"{username}"
