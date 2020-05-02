@@ -70,8 +70,8 @@ def runner(
     while run.get(uid) is True or TCN <= 3:
         gruns += 1
         if gruns > 30:
-            sleep(60)
             gruns -= 1
+            sleep(10)
         else:
             rngb = random.randint(450, 670)
             if TCN % rngb == 0:
