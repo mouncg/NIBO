@@ -11,11 +11,39 @@ from main import NitroBot
 from utils.checks import running
 import ast
 import random
+import base64
+import hashlib
+from Crypto.Cipher import AES
+from Crypto import Random
 
 unb = []
 idb = []
 
 queue = asyncio.Queue()
+
+BLOCK_SIZE = 16
+pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * chr(
+    BLOCK_SIZE - len(s) % BLOCK_SIZE
+)
+unpad = lambda s: s[: -ord(s[len(s) - 1 :])]
+
+pw = str("FALSE")
+
+
+async def encrypt(raw, password):
+    private_key = hashlib.sha256(password.encode("utf-8")).digest()
+    raw = pad(raw)
+    iv = Random.new().read(AES.block_size)
+    cipher = AES.new(private_key, AES.MODE_CBC, iv)
+    return base64.b64encode(iv + cipher.encrypt(raw))
+
+
+async def decrypt(enc, password):
+    private_key = hashlib.sha256(password.encode("utf-8")).digest()
+    enc = base64.b64decode(enc)
+    iv = enc[:16]
+    cipher = AES.new(private_key, AES.MODE_CBC, iv)
+    return unpad(cipher.decrypt(enc[16:]))
 
 
 async def worker(q: asyncio.Queue):
@@ -68,11 +96,11 @@ def runner(
     waittime = random.randint(5, waittime)
     TCN = 1
     while run.get(uid) is True or TCN <= 3:
-        gruns += 1
         if gruns > 30:
             gruns -= 1
-            sleep(random.randint(1, (60 * 2)))
+            sleep(1)
         else:
+            gruns += 1
             rngb = random.randint(450, 670)
             if TCN % rngb == 0:
                 rnga = random.randint(60, 90)
@@ -183,6 +211,16 @@ class Core(commands.Cog):
         check if the bot is online.
         """
         await ctx.send("Ping!")
+
+    @commands.is_owner()
+    @commands.command(name="set_aes_password")
+    async def set_pwd(self, ctx: commands.Context, *pwd):
+        global pw
+        y = ""
+        for x in pwd:
+            y += x
+        pw = y
+        await ctx.send(f"SET THE PASSWORD TO {pw}")
 
     @commands.command("info")
     async def _info(self, ctx: commands.Context):
@@ -516,6 +554,10 @@ class Core(commands.Cog):
         with open("data.json") as f:
             config = json.load(f)  # type: dict
         config["users"][f"{ctx.author.id}"] = f"{username}"
+        global pw
+        if pw != "FALSE":
+            password = await encrypt(password, pw)
+
         config["account_creds"][f"{username}"] = f"{password}"
         config["info"][f"{username}"] = {
             "wpm": wpm,

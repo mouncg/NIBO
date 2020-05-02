@@ -3,3 +3,4 @@ discord
 aiomysql
 asyncio
 termcolor
+pycrypto
