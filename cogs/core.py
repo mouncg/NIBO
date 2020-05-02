@@ -83,6 +83,7 @@ def runner(
                 f"5 -S {safe_mode} -f {plac}nitro_cfg.json "
             )
             TCN += 1
+            gruns -= 1
 
 
 class Thread(threading.Thread):
