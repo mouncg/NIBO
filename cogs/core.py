@@ -337,10 +337,10 @@ class Core(commands.Cog):
     ):
         global idb
         if user in idb:
-            idb.remove(user)
+            idb.remove(user.id)
             m = f"UNBLACKLISTED {user}"
         else:
-            idb.append(user)
+            idb.append(user.id)
             m = f"BLACKLISTED {user}"
         await ctx.send(f"{m}")
         with open("id_blacklist.txt", "w") as f:
