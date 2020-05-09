@@ -44,6 +44,11 @@ class Backups(commands.Cog):
             )
         )
 
+    @commands.Cog.listener(name="on_ready")
+    async def start_backups(self):
+        self.running_backup.start()
+        self.data_backup.start()
+
 
 def setup(bot: NitroBot):
     bot.add_cog(Backups(bot))
