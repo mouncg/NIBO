@@ -44,6 +44,14 @@ class Backups(commands.Cog):
             )
         )
 
+    @commands.command(name="start_loop")
+    async def start_backups(self, ctx):
+        try:
+            self.running_backup.start()
+            self.data_backup.start()
+        except RuntimeError as e:
+            await ctx.send(e)
+
     @commands.Cog.listener(name="on_ready")
     async def start_backups(self):
         self.running_backup.start()

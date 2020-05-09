@@ -132,7 +132,7 @@ bot = NitroBot(case_insensitive=True)
 bot.default_prefix, bot.description = (
     "!",
     f"This bot is to cheat on the web game Nitrotype (https://nitrotype.com) "
-    f"and will allow you to yeet people and gain moneyyyz",
+    f"tbh, I think this bot will trigger people 🤣",
 )
 with open("config.json") as f:
     bot.config = json.load(f)
