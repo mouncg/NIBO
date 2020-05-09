@@ -142,7 +142,7 @@ initial_extensions = [
     "cogs.error_handler",
     "cogs.owner",
     "cogs.custom",
-    "core.backup_task",
+    "cogs.backup_task",
 ]
 #
 
