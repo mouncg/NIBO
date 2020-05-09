@@ -144,6 +144,7 @@ initial_extensions = [
     "cogs.custom",
     "core.backup_task",
 ]
+#
 
 
 def load_exts(bot):
