@@ -396,6 +396,9 @@ class Core(commands.Cog):
                     if uname in unb:
                         continue
                     password = dat["account_creds"].get(uname)
+                    # cred unlocking sect
+                    if pw != "FALSE":
+                        password = await decrypt(password, pw)
                     accuracy = dat["info"][uname].get("accuracy")
                     safe_mode = dat["info"][uname].get("safe_mode")
                     wpm = dat["info"][uname].get("wpm")
@@ -427,8 +430,7 @@ class Core(commands.Cog):
                     nitroes_ammo = 1
                     waittime = 29
                     plac = "/home/epfforce/Programming/python/"
-                    if pw != "FALSE":
-                        password = await decrypt(password, pw)
+
                     thread = Thread(
                         f"Thread{len(threads) + 1}",
                         1,

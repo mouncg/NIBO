@@ -10,14 +10,14 @@ class Backups(commands.Cog):
     def __init__(self, bot):
         self.bot = bot  # type: NitroBot
 
-    @tasks.loop(minutes=30)
+    @tasks.loop(minutes=3)
     async def data_backup(self):
         with open("data.json") as f:
             data = json.load(f)
         with open(f"backups/data/{datetime.datetime}.json", "w") as f:
             json.dump(data, f)
 
-    @tasks.loop(minutes=10)
+    @tasks.loop(minutes=1)
     async def running_backup(self):
         with open("spd.txt") as f:
             data = json.load(f)
