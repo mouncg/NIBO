@@ -14,14 +14,14 @@ class Backups(commands.Cog):
     async def data_backup(self):
         with open("data.json") as f:
             data = json.load(f)
-        with open(f"backups/data/{datetime.datetime}.json", "w") as f:
+        with open(f"backups/data/{datetime.datetime()}.json", "w") as f:
             json.dump(data, f)
 
     @tasks.loop(minutes=1)
     async def running_backup(self):
         with open("spd.txt") as f:
             data = json.load(f)
-        with open(f"backups/running/{datetime.datetime}.txt") as f:
+        with open(f"backups/running/{datetime.datetime()}.txt") as f:
             json.dump(data, f)
 
     @data_backup.after_loop
