@@ -82,7 +82,6 @@ def cfg():
 uLock = {}
 run = {}
 money_run = {}
-gruns = 0
 loop = asyncio.get_event_loop()
 # executor = ThreadPoolExecutor(max_workers=30)
 
@@ -92,26 +91,19 @@ ldw = False
 def runner(
     accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid,
 ):
-    global gruns
     waittime = random.randint(5, waittime)
     TCN = 1
     while run.get(uid) is True or TCN <= 3:
-        if gruns > 30:
-            gruns -= 1
-            sleep(1)
-        else:
-            gruns += 1
-            rngb = random.randint(450, 670)
-            if TCN % rngb == 0:
-                rnga = random.randint(60, 90)
-                sleep(60 * rnga)
-            sleep(waittime)
-            system(
-                f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c "
-                f"5 -S {safe_mode} -f {plac}nitro_cfg.json "
-            )
-            TCN += 1
-            gruns -= 1
+        rngb = random.randint(450, 670)
+        if TCN % rngb == 0:
+            rnga = random.randint(60, 90)
+            sleep(60 * rnga)
+        sleep(waittime)
+        system(
+            f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c "
+            f"5 -S {safe_mode} -f {plac}nitro_cfg.json "
+        )
+        TCN += 1
 
 
 class Thread(threading.Thread):
@@ -259,7 +251,7 @@ class Core(commands.Cog):
     @commands.command(name="stop")
     @commands.check(running)
     async def _stop(self, ctx: commands.Context):
-        global run, threads, ldw, gruns
+        global run, threads, ldw
         if ldw is False:
             return await ctx.send(
                 "WE ARE CURRENTLY DISABLING THE SERVICE FOR MAINTENANCE, TRY AGAIN LATER!"
@@ -282,7 +274,6 @@ class Core(commands.Cog):
                 threads.remove(thread)
         with open("data.json", "w") as ff:
             json.dump(config, ff)
-        gruns -= 1
 
         return await ctx.send("FINISHED SETTING THE BOT TO KILL AFTER FINISHED RACE!")
 
@@ -309,7 +300,7 @@ class Core(commands.Cog):
     @commands.has_role(696844654569717761)
     async def _FSP(self, ctx: commands.Context, user: commands.Greedy[discord.User]):
         user = user[0]
-        global run, threads, gruns
+        global run, threads
         run[str(user.id)] = False
         with open("data.json") as f:
             config = json.load(f)  # type: dict
@@ -327,7 +318,6 @@ class Core(commands.Cog):
                 threads.remove(thread)
         with open("data.json", "w") as ff:
             json.dump(config, ff)
-        gruns -= 1
         return await ctx.send("FINISHED SETTING THE BOT TO KILL AFTER FINISHED RACE!")
 
     @commands.command(name="blacklist_discord")
@@ -377,7 +367,7 @@ class Core(commands.Cog):
     @commands.command(name="LD")
     @commands.has_role(696844654569717761)
     async def _ld(self, ctx: commands.Context):
-        global run, threads, ldw, gruns, idb, unb
+        global run, threads, ldw, idb, unb
         ldw = False
         with open("spd.txt") as f:
             r = ast.literal_eval(f"{f.readline()}")
@@ -467,7 +457,7 @@ class Core(commands.Cog):
         wpm: int = None,
         accuracy: int = None,
     ):
-        global run, threads, ldw, gruns, unb, idb, uLock
+        global run, threads, ldw, unb, idb, uLock
         if ldw is False:
             return await ctx.send(
                 "WE ARE CURRENTLY DISABLING THE SERVICE FOR MAINTENANCE, TRY AGAIN LATER!"
