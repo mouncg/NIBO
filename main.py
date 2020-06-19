@@ -142,7 +142,7 @@ initial_extensions = [
     "cogs.error_handler",
     "cogs.owner",
     "cogs.custom",
-    "cogs.backup_task",
+    # "cogs.backup_task",
 ]
 #
 
@@ -161,15 +161,9 @@ async def ONLINE():
     print("THE BOT IS ONLINE")
 
 
-@bot.listen(name="on_ready")
-async def mysql_init():
-    await bot.create_pool()
-
-
-# @bot.command(name="inst_req", hidden=True)
-# @commands.is_owner()
-# async def _inst(ctx: commands.Context):
-#     system("npm i @ifvictr/nitrous")
+# @bot.listen(name="on_ready")
+# async def mysql_init():
+# await bot.create_pool()
 
 
 @bot.command(name="reload", hidden=True)

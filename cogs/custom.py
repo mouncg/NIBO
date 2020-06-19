@@ -19,7 +19,7 @@ class custom_commands(commands.Cog):
             **QUEUE CREATOR**: EppyPrime™#1461
             
             **SUPPORT:** EppyPrime™#1461, Limt#6491
-            **TRAVIS:** SOON™""",
+            **TRAVIS:** Coded the main bot part UwU ty ♥""",
         )
         return await ctx.send(embed=e)
 
