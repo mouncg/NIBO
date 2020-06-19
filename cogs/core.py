@@ -91,14 +91,15 @@ ldw = False
 def runner(
     accuracy, nitroes_ammo, password, wpm, username, waittime, safe_mode, plac, uid,
 ):
-    waittime = random.randint(5, waittime)
+    # waittime = random.randint(5, waittime)
     TCN = 1
     while run.get(uid) is True or TCN <= 3:
-        rngb = random.randint(450, 670)
-        if TCN % rngb == 0:
-            rnga = random.randint(60, 90)
-            sleep(60 * rnga)
-        sleep(waittime)
+        # rngb = random.randint(450, 670)
+        # if TCN % rngb == 0:
+        #     rnga = random.randint(60, 90)
+        # sleep(60 * rnga)
+        # sleep(waittime)
+        waittime = 1
         system(
             f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c "
             f"5 -S {safe_mode} -f {plac}nitro_cfg.json "
@@ -214,40 +215,6 @@ class Core(commands.Cog):
         pw = y
         await ctx.send(f"SET THE PASSWORD TO {pw}")
 
-    @commands.command("info")
-    async def _info(self, ctx: commands.Context):
-        """
-        info!
-        """
-        return await ctx.send("Disabled cmd")
-        config = data()
-        users = config["users"]  # type: dict
-        info = config["info"]
-        if str(ctx.author.id) in config["users"]:
-            for user in users:
-                username = users.get(user)
-                info = info[username]
-                uinfo = {
-                    "username": username,
-                    "wpm": info["wpm"],
-                    "accuracy": info["accuracy"],
-                    "safe": info["safe_mode"],
-                }
-                e = discord.Embed(color=0x64FF00)
-                e.title = f"NITROTYPE BOT"
-                e.add_field(name=f"USERNAME", value=f'{uinfo.get("username")}')
-                e.add_field(name="\u200b", value="\u200b")
-                e.add_field(name=f"WPM", value=f'{uinfo.get("wpm")}')
-                e.add_field(name=f"accuracy", value=f'{uinfo.get("accuracy") * 100}')
-                e.add_field(name="\u200b", value="\u200b")
-                e.add_field(name=f"Safe Mode", value=f'{uinfo.get("safe")}')
-                await ctx.send(embed=e)
-        else:
-            await ctx.send(
-                "You are not logged in with any accounts.\nto log in please use `!login` and follow the "
-                "instructions."
-            )
-
     @commands.command(name="stop")
     @commands.check(running)
     async def _stop(self, ctx: commands.Context):
@@ -277,7 +244,7 @@ class Core(commands.Cog):
 
         return await ctx.send("FINISHED SETTING THE BOT TO KILL AFTER FINISHED RACE!")
 
-    @commands.command(name="list_running", hidden=True)
+    @commands.command(name="list_running", hidden=False)
     @commands.has_role(696844654569717761)
     async def _list(self, ctx: commands.Context):
         global run
@@ -295,7 +262,7 @@ class Core(commands.Cog):
         await ctx.send("SAVED!")
 
     @commands.command(
-        name="FSP", hidden=True,
+        name="FSP", hidden=False,
     )
     @commands.has_role(696844654569717761)
     async def _FSP(self, ctx: commands.Context, user: commands.Greedy[discord.User]):
@@ -460,7 +427,7 @@ class Core(commands.Cog):
         global run, threads, ldw, unb, idb, uLock
         if ldw is False:
             return await ctx.send(
-                "WE ARE CURRENTLY DISABLING THE SERVICE FOR MAINTENANCE, TRY AGAIN LATER!"
+                "WE ARE CURRENTLY PERFORMING MAINTENANCE, TRY AGAIN LATER!"
             )
 
         if (
@@ -470,16 +437,16 @@ class Core(commands.Cog):
                 f"THE USAGE FOR THIS COMMAND IS `!login <username> <password> <wpm> <accuracy>`, please use this "
                 f"without the `<>` part! "
             )
-        if accuracy >= 97:
-            accuracy = 97
-            await ctx.send("ACCURACY IS TOO HIGH, CHANGED TO 97!")
-        if wpm >= 111:
-            wpm = 70
-            await ctx.send("WPM IS TOO HIGH, LOADED TO 70!")
-        if wpm > 40:
-            wpm -= 20
-        if 40 > wpm > 5:
-            wpm -= 5
+        # if accuracy >= 97:
+        #     accuracy = 97
+        #     await ctx.send("ACCURACY IS TOO HIGH, CHANGED TO 97!")
+        # if wpm >= 111:
+        #     wpm = 70
+        #     await ctx.send("WPM IS TOO HIGH, LOADED TO 70!")
+        # if wpm > 40:
+        #     wpm -= 20
+        # if 40 > wpm > 5:
+        #     wpm -= 5
         if username in unb or ctx.author.id in idb:
             return await ctx.send("YOU ARE BLACKLISTED! PLEASE DON'T DO THIS!")
         safe_mode = True
