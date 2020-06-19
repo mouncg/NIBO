@@ -102,7 +102,7 @@ def runner(
         waittime = 1
         system(
             f"nitrous -a {accuracy} -n {nitroes_ammo} -p {password} -s 2 -w {wpm} -u {username} -t {waittime} -c "
-            f"5 -S {safe_mode} -f {plac}nitro_cfg.json "
+            f"5 -S {safe_mode}"
         )
         TCN += 1
 
